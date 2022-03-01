@@ -1,0 +1,6 @@
+<h1>{{ post.post_text }}</h1>
+<ul>
+{% for reply in post.choice_set.all %}
+    <li>{{ reply.choice_text }}</li>
+{% endfor %}
+</ul>

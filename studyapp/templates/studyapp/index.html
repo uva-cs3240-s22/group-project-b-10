@@ -1,0 +1,9 @@
+{% if latest_reply_list %}
+    <ul>
+    {% for post in latest_reply_list %}
+        <li><a href="{% url 'studyapp:detail' post.id %}">{{ post.post_text }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No meetings are available.</p>
+{% endif %}
