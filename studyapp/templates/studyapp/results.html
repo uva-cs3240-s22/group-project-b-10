@@ -1,0 +1,9 @@
+<h1>{{ meeting.post_text }}</h1>
+
+<ul>
+{% for choice in meeting.reply_set.all %}
+    <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
+{% endfor %}
+</ul>
+
+<a href="{% url 'studyapp:detail' meeting.id %}">Vote again?</a>

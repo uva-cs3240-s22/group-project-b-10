@@ -1,6 +1,13 @@
-<h1>{{ post.post_text }}</h1>
-<ul>
-{% for reply in post.choice_set.all %}
-    <li>{{ reply.choice_text }}</li>
-{% endfor %}
-</ul>
+<form action="{% url 'studyapp:vote' meeting.id %}" method="post">
+{% csrf_token %}
+<fieldset>
+    <legend><h1>{{ meeting.post_text }}</h1></legend>
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    {% for choice in meeting.reply_set.all %}
+        <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+        <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+    {% endfor %}
+</fieldset>
+<input type="submit" value="Vote">
+</form>
+
