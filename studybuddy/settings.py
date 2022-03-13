@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
+import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -137,3 +138,26 @@ try:
         django_heroku.settings(locals())
 except ImportError:
     found = False
+
+
+
+
+# setup Heroku Postgres DB
+if 'test' in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': 'mydatabase'
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'HOST': 'ec2-44-192-245-97.compute-1.amazonaws.com',
+            'NAME': 'd7no69fjrqcbru',
+            'USER': 'tcrisyultsfkue',
+            'PASSWORD': '3babd37531a43d529467b7d9c1a212930ddc3e4a02aa0f90a83b4a799ce9a770',
+            'PORT': '5432'
+        }
+    }
