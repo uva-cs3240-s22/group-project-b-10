@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-pxz0aun*1-^hw$#b@=5w3&okuq*2%vu^nt&$%7g)&=2w==zm__
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['b10-adv-swe.herokuapp.com', 'localhost']
+ALLOWED_HOSTS = ['b10-adv-swe.herokuapp.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap5',
     'django.contrib.sites',
-    'oauth_app',
+    'studybuddy',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -187,7 +187,7 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-SITE_ID = 2
+SITE_ID = 3
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
