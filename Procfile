@@ -1,2 +1,2 @@
 release: python manage.py migrate
-web: gunicorn mysite.wsgi
+web: gunicorn studybuddy.wsgi
