@@ -4,3 +4,5 @@ django-on-heroku==1.1.2
 gunicorn==20.1.0
 sqlparse==0.4.2
 whitenoise==6.0.0
+django-allauth==0.49.0
+django-oauth-toolkit==1.7.0
