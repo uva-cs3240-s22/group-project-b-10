@@ -136,4 +136,8 @@ GitHub.sublime-settings
 !.vscode/extensions.json 
 .history
 
+# Additional Files
 passwords.txt
+secret_keys.json
+
+
