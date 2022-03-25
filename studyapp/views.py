@@ -76,7 +76,7 @@ def api_call(request):
             course_info = str(c[0]) + ' ' + str(c[1]) + '-' + str(c[2])
             course_title = str(c[4])
             # print(course_info)
-            Course.object.create(course_name=course_title)
+            Course.objects.create(course_name=course_title)
 
     # maybe display something on page when updated --> optional
     return render(request, 'studyapp/api-call.html')

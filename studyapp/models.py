@@ -5,11 +5,14 @@ from django.utils import timezone
 from django.contrib import admin
 
 # Create your models here.
-class Course():
+class Course(models.Model):
 #     field: name, id, etc
+    objects = models.Manager()
     course_name = models.CharField(max_length=200)
     # course_id = models.CharField(max_length=50)
-    objects = models.Manager()
+
+    def __str__(self):
+        return self.course_name
 
 class Meeting(models.Model):
     post_text = models.CharField(max_length=200)
