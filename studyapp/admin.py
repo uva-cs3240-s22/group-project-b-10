@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Reply, Meeting
+from .models import Course, Reply, Meeting
 
 # Register your models here.
 
@@ -8,6 +8,11 @@ class ReplyInline(admin.TabularInline):
     model = Reply
     extra = 3
 
+# class CourseAdmin(admin.CourseAdmin):
+#     model = Course
+#     fieldsets = [
+#         (None, {'fields': ['course_name']})
+#     ]
 
 class MeetingAdmin(admin.ModelAdmin):
     fieldsets = [
