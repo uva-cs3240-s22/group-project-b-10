@@ -3,6 +3,9 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
+# I got this from a search tutorial 
+# https://learndjango.com/tutorials/django-search-tutorial
+from django.db.models import Q
 
 from .models import Meeting, Reply, Course
 import requests
@@ -27,6 +30,17 @@ class DetailView(generic.DetailView):
 class ResultsView(generic.DetailView):
     model = Meeting
     template_name = 'studyapp/results.html'
+
+class SearchResultsView(generic.ListView):
+    model = Course
+    template_name = "studyapp/search_results.html"
+
+    def get_queryset(self):  
+        query = self.request.GET.get("q")
+        object_list = Course.objects.filter(
+            Q(course_name__icontains=query) | Q(department__icontains=query)
+        )
+        return object_list
 
 def vote(request, meeting_id):
     post = get_object_or_404(Meeting, pk=meeting_id)
@@ -75,17 +89,18 @@ def api_call(request):
     previous_course_title = ""
     for c in class_list:
         i+=1
-        if(i>=1000):
+        if(i>=2000):
             break
 
         # print(c)
         if c[-1] == "2022 Spring":
             course_info = str(c[0]) + ' ' + str(c[1]) + '-' + str(c[2])
+            department_code = str(c[0])
             course_title = str(c[4])
             if (previous_course_title != course_title):
             # print(course_info)
                 previous_course_title = course_title
-                Course.objects.create(course_name=course_title)
+                Course.objects.create(course_name=course_title, department = department_code)
 
     # maybe display something on page when updated --> optional
     return render(request, 'studyapp/api-call.html')

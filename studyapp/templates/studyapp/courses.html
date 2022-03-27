@@ -1,14 +1,33 @@
-<!-- <h1>{{ question.question_text }}</h1> -->
+{# Load the tag library #}
+{% load bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
     <title>Courses</title>
   </head>
-  <body>
-    <ul>
+<body>
+    <div class="p-3 mb-2 bg-dark text-white">
+        <figure class="text-center">
+            <h1>{{ 'Courses'  }}</h1>
+        </figure>
+    </div>
+    <form action="{% url 'studyapp:search_results' %}" method="get">
+        <div class="form group">
+            <input name="q" type="text" placeholder="Search...">
+        </div>
+    </form>      
+    <ul class="list-group">
         {% for course in courses_list %}
-            <li>{{ course.course_name }}</li>
+            <li class="list-group-item">{{course.course_name}}</li>
         {% endfor %}
         </ul>
   </body>

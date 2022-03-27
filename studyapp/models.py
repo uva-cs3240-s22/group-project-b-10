@@ -9,6 +9,7 @@ class Course(models.Model):
 #     field: name, id, etc
     objects = models.Manager()
     course_name = models.CharField(max_length=200)
+    department = models.CharField(max_length=200, default="DEP")
     # course_id = models.CharField(max_length=50)
     # @admin.display(
     #     boolean=True,
