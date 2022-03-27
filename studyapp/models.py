@@ -10,7 +10,10 @@ class Course(models.Model):
     objects = models.Manager()
     course_name = models.CharField(max_length=200)
     # course_id = models.CharField(max_length=50)
-
+    # @admin.display(
+    #     boolean=True,
+    #     ordering='course_name'
+    # )
     def __str__(self):
         return self.course_name
 

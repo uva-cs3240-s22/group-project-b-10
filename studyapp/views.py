@@ -51,6 +51,12 @@ def get_data():
 	data = requests.get(url).json()
 	return data
 
+def CoursesView(request):
+    model = Course
+    template_name = 'studyapp/courses.html'
+    courses_list = Course.objects.order_by('course_name')
+    context = {'courses_list': courses_list}
+    return render(request, template_name, context)
 
 def api_call(request):
     # find a way to clear the database or update before repopulating
@@ -66,17 +72,20 @@ def api_call(request):
     class_list = get_data()['class_schedules']['records']
 
     i = 0
+    previous_course_title = ""
     for c in class_list:
         i+=1
-        if(i>=10):
+        if(i>=1000):
             break
 
         # print(c)
         if c[-1] == "2022 Spring":
             course_info = str(c[0]) + ' ' + str(c[1]) + '-' + str(c[2])
             course_title = str(c[4])
+            if (previous_course_title != course_title):
             # print(course_info)
-            Course.objects.create(course_name=course_title)
+                previous_course_title = course_title
+                Course.objects.create(course_name=course_title)
 
     # maybe display something on page when updated --> optional
     return render(request, 'studyapp/api-call.html')

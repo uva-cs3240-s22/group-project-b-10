@@ -1,0 +1,16 @@
+<!-- <h1>{{ question.question_text }}</h1> -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Courses</title>
+  </head>
+  <body>
+    <ul>
+        {% for course in courses_list %}
+            <li>{{ course.course_name }}</li>
+        {% endfor %}
+        </ul>
+  </body>
+</html>
+
