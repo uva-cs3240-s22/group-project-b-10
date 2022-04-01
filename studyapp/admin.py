@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Course, Reply, Meeting
+from .models import Course, Reply, Meeting, Profile
 
 # Register your models here.
 
@@ -25,3 +25,4 @@ class MeetingAdmin(admin.ModelAdmin):
     search_fields = ['post_text']
 
 admin.site.register(Meeting, MeetingAdmin)
+admin.site.register(Profile)
