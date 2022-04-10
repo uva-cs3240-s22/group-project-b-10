@@ -1,3 +1,20 @@
+<!--http://localhost:8000/accounts/google/login/-->
+{# Load the tag library #}
+{% load bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+<div
+  class="bg-image"
+  style="background-image: url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.britannica.com%2Fstory%2Fa-brief-history-of-libraries&psig=AOvVaw38bkg0CH0dgNZ8jklixRVs&ust=1648480514416000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCPCRkc_K5vYCFQAAAAAdAAAAABAD');
+	 height: 100vh;"
+  >
+
 {% load socialaccount %}
 <html>
 <body>
@@ -5,7 +22,43 @@
 {% if user.is_authenticated %}
   <p>Welcome, You are logged in as {{ user.username }}</p>
 {% else %}
-  <a href="{% provider_login_url 'google' %}">Login With Google</a>
+    <section class="login-block">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    <form class="md-float-material form-material" action="#" method="POST">
+                        <div class="auth-box card">
+                            <div class="card-block">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h3 class="text-center heading">Create your BBBootstrap account. It’s free and only takes a minute.</h3>
+                                    </div>
+                                </div>
+                                <div class="form-group form-primary"> <input type="text" class="form-control" name="first_name" value="" placeholder="Display name" id="first_name"> </div>
+                                <div class="form-group form-primary"> <input type="text" class="form-control" name="email" value="" placeholder="Email" id="email"> </div>
+                                <div class="form-group form-primary"> <input type="password" class="form-control" name="password" placeholder="Password" value="" id="password"> </div>
+                                <div class="form-group form-primary"> <input type="password" class="form-control" name="password_confirm" placeholder="Repeat password" value="" id="password_confirm"> </div>
+                                <div class="row">
+                                    <div class="col-md-12"> <input type="submit" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20" name="submit" value="Signup Now"> <!-- <button type="button" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20"><i class="fa fa-lock"></i> Signup Now </button> -->
+                                    </div>
+                                </div>
+                                <div class="or-container">
+                                    <div class="line-separator"></div>
+                                    <div class="or-label">or</div>
+                                    <div class="line-separator"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12"> <a class="btn btn-lg btn-google btn-block text-uppercase btn-outline" href="#"><img src="https://img.icons8.com/color/16/000000/google-logo.png"> Signup Using Google</a> </div>
+                                </div> <br>
+                                <p class="text-inverse text-center">Already have an account? <a href="{% provider_login_url 'google' %}">Login With Google</a></p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endif %}
 </body>
 </html>
+
