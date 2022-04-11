@@ -75,8 +75,8 @@ def CoursesView(request):
 def ProfileView(request):
     model = Profile
     template_name = 'studyapp/profile.html'
-    myProfile = Profile.objects.order_by('user')
-    context = {'Profile_Info': myProfile}
+    myProfile = Profile.objects.get(user = request.user)
+    context = {'profile': myProfile}
     return render(request, template_name, context)
 
 

@@ -46,6 +46,7 @@ class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     objects = models.Manager()
     name = models.CharField(max_length=200)
+    email = models.CharField(max_length=200)
     friends = models.CharField(max_length=200)  # Eventually should be array
     enrolled_courses = models.CharField(max_length=200)  # Eventually should be array
     selected_courses = models.CharField(max_length=200)  # Eventually should be array

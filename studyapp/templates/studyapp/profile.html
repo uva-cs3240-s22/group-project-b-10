@@ -16,12 +16,10 @@
 </head>
 <body>
     <li class="list-group-item">{{user.username}}</li>
-    <li class="list-group-item">{{user.email}}</li>
-        {% for profile in Profile_Info %}
-            <h2>{{profile.name}}</h2>
-            <li class="list-group-item">{{profile.friends}}</li>
-            <li class="list-group-item">{{profile.enrolled_courses}}</li>
-            <li class="list-group-item">{{profile.selected_courses}}</li>
-        {% endfor %}
+    <li class="list-group-item">{{profile.email}}</li>
+    <h2>{{profile.name}}</h2>
+    <li class="list-group-item">{{profile.friends}}</li>
+    <li class="list-group-item">{{profile.enrolled_courses}}</li>
+    <li class="list-group-item">{{profile.selected_courses}}</li>
 </body>
 </html>
