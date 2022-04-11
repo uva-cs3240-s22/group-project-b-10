@@ -7,7 +7,7 @@ from django.utils import timezone
 # https://learndjango.com/tutorials/django-search-tutorial
 from django.db.models import Q
 
-from .models import Meeting, Reply, Course
+from .models import Meeting, Reply, Course, Profile
 import requests
 
 
@@ -71,6 +71,15 @@ def CoursesView(request):
     courses_list = Course.objects.order_by('course_name')
     context = {'courses_list': courses_list}
     return render(request, template_name, context)
+
+def ProfileView(request):
+    model = Profile
+    template_name = 'studyapp/profile.html'
+    myProfile = Profile.objects.order_by('user')
+    context = {'Profile_Info': myProfile}
+    return render(request, template_name, context)
+
+
 
 def api_call(request):
     # find a way to clear the database or update before repopulating
