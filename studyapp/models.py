@@ -42,7 +42,9 @@ class Reply(models.Model):
         return self.choice_text
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    objects = models.Manager()
     name = models.CharField(max_length=200)
     email = models.CharField(max_length=200)
     friends = models.CharField(max_length=200)  # Eventually should be array

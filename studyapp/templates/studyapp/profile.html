@@ -1,0 +1,25 @@
+{# Load the tag library #}
+{% load bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+<body>
+    <li class="list-group-item">{{user.username}}</li>
+    <li class="list-group-item">{{profile.email}}</li>
+    <h2>{{profile.name}}</h2>
+    <li class="list-group-item">{{profile.friends}}</li>
+    <li class="list-group-item">{{profile.enrolled_courses}}</li>
+    <li class="list-group-item">{{profile.selected_courses}}</li>
+</body>
+</html>

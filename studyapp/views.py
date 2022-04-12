@@ -7,7 +7,7 @@ from django.utils import timezone
 # https://learndjango.com/tutorials/django-search-tutorial
 from django.db.models import Q
 
-from .models import Meeting, Reply, Course
+from .models import Meeting, Reply, Course, Profile
 import requests
 
 
@@ -43,18 +43,18 @@ class SearchResultsView(generic.ListView):
         return object_list
 
 def vote(request, meeting_id):
-    post = get_object_or_404(Meeting, pk=meeting_id)
+    meeting = get_object_or_404(Meeting, pk=meeting_id)
     try:
-        selected_choice = post.reply_set.get(pk=request.POST['choice'])
+        selected_reply = meeting.reply_set.get(pk=request.POST['choice'])
     except (KeyError, Reply.DoesNotExist):
         # Redisplay the question voting form.
         return render(request, 'studyapp/detail.html', {
-            'post': post,
+            'meeting': meeting,
             'error_message': "You didn't select a choice.",
         })
     else:
-        selected_choice.votes += 1
-        selected_choice.save()
+        selected_reply.votes += 1
+        selected_reply.save()
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
@@ -71,6 +71,15 @@ def CoursesView(request):
     courses_list = Course.objects.order_by('course_name')
     context = {'courses_list': courses_list}
     return render(request, template_name, context)
+
+def ProfileView(request):
+    model = Profile
+    template_name = 'studyapp/profile.html'
+    myProfile = Profile.objects.get(user = request.user)
+    context = {'profile': myProfile}
+    return render(request, template_name, context)
+
+
 
 def api_call(request):
     # find a way to clear the database or update before repopulating
@@ -104,5 +113,4 @@ def api_call(request):
 
     # maybe display something on page when updated --> optional
     return render(request, 'studyapp/api-call.html')
-
 

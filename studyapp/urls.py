@@ -10,5 +10,6 @@ urlpatterns = [
     path('<int:meeting_id>/vote/', views.vote, name='vote'),
     path('api-call/', views.api_call, name='api-call'),
     path('courses/', views.CoursesView, name='courses'),
-    path("search/", views.SearchResultsView.as_view(), name="search_results")
+    path("search/", views.SearchResultsView.as_view(), name="search_results"),
+    path('profile/', views.ProfileView, name='profile')
 ]
