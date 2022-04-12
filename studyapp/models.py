@@ -3,6 +3,7 @@ import datetime
 from django.db import models
 from django.utils import timezone
 from django.contrib import admin
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Course(models.Model):
@@ -40,3 +41,13 @@ class Reply(models.Model):
     def __str__(self):
         return self.choice_text
 
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200)
+    email = models.CharField(max_length=200)
+    friends = models.CharField(max_length=200)  # Eventually should be array
+    enrolled_courses = models.CharField(max_length=200)  # Eventually should be array
+    selected_courses = models.CharField(max_length=200)  # Eventually should be array
+
+    def __str__(self):
+        return f'{self.user.username} Profile'
