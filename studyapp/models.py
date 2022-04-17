@@ -4,6 +4,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib import admin
 from django.contrib.auth.models import User
+from django.contrib.postgres.fields import ArrayField
 
 # Create your models here.
 class Course(models.Model):
@@ -20,6 +21,9 @@ class Course(models.Model):
         return self.course_name
 
 class Meeting(models.Model):
+    # should meeting have a course associated with it?
+    # course is a many to one relationship so we use models.ForeignKey()
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
     post_text = models.CharField(max_length=200)
     post_date = models.DateTimeField('date posted')
     def __str__(self):
@@ -50,6 +54,11 @@ class Profile(models.Model):
     friends = models.CharField(max_length=200)  # Eventually should be array
     enrolled_courses = models.CharField(max_length=200)  # Eventually should be array
     selected_courses = models.CharField(max_length=200)  # Eventually should be array
+    # a user's/profile's relationship to meetings is many to many.
+    # A meeting might have many profiles
+    # A profile might have many meetings
+    meetings = models.ManyToManyField(Meeting)
+
 
     def __str__(self):
         return f'{self.user.username} Profile'

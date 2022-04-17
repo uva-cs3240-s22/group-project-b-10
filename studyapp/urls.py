@@ -11,5 +11,6 @@ urlpatterns = [
     path('api-call/', views.api_call, name='api-call'),
     path('courses/', views.CoursesView, name='courses'),
     path("search/", views.SearchResultsView.as_view(), name="search_results"),
-    path('profile/', views.ProfileView, name='profile')
+    path('profile/', views.ProfileView, name='profile'),
+    path('browse-meetings/', views.views.MeetingView, name="browse-meetings")
 ]

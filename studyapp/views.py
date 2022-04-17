@@ -79,7 +79,13 @@ def ProfileView(request):
     context = {'profile': myProfile}
     return render(request, template_name, context)
 
-
+# idea here is we let users browse all the upcoming meetings, so they can add the ones they want
+def MeetingView(request):
+    model = Meeting
+    template_name = 'studyapp/browse-meetings.html'
+    all_meetings = Meeting.objects.order_by('post_date')
+    context = {'all_meetings': all_meetings}
+    return render(request, template_name, context)
 
 def api_call(request):
     # find a way to clear the database or update before repopulating
@@ -94,12 +100,13 @@ def api_call(request):
         # make sure there are no repeating classes
     class_list = get_data()['class_schedules']['records']
 
-    i = 0
+    # i = 0
     previous_course_title = ""
     for c in class_list:
-        i+=1
-        if(i>=2000):
-            break
+        # I'm commenting this part out because I think we want to load every class 
+        # i+=1
+        # if(i>=2000):
+        #     break
 
         # print(c)
         if c[-1] == "2022 Spring":
