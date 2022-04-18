@@ -18,7 +18,7 @@
     <form method='POST'>
         {% csrf_token %}
         {{ form|crispy}}
-        <a href="/studyapp/browse-meetings/" class="btn btn-secondary btn-lg" role="button">Take me to browse meetings</a>
+        <a href="/browse-meetings/" class="btn btn-secondary btn-lg" role="button">Take me to browse meetings</a>
         <button type="submit" class="btn btn-primary btn-lg btn-light">Submit</button>
         <!-- <a href="{'polls:deepthoughts:list'}">Looking for the list of thoughts?</a> -->
     </form>
