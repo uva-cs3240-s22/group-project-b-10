@@ -1,6 +1,15 @@
-{% load static %}
+<!--http://localhost:8000/accounts/google/login/-->
+{# Load the tag library #}
+{% load bootstrap5 %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'studyapp/style.css' %}">
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+
 {% if latest_reply_list %}
     <ul>
     {% for meeting in latest_reply_list %}
