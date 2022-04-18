@@ -1,10 +1,12 @@
-from django.urls import path
+from django.urls import path, re_path
 
 from . import views
 
 app_name = 'studyapp'
 urlpatterns = [
-    path('', views.IndexView.as_view(), name='index'),
+    path('', views.all_rooms, name='all_rooms'),
+    re_path(r'token$', views.token, name="token"),
+    re_path(r'rooms/(?P<slug>[-\w]+)/$', views.room_detail, name="room_detail"),
     path('<int:pk>/', views.DetailView.as_view(), name='detail'),
     path('<int:pk>/results/', views.ResultsView.as_view(), name='results'),
     path('<int:meeting_id>/vote/', views.vote, name='vote'),

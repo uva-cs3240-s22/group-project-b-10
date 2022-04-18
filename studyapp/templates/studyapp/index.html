@@ -1,69 +1,54 @@
-<!--http://localhost:8000/accounts/google/login/-->
-{# Load the tag library #}
-{% load bootstrap5 %}
-
-{# Load CSS and JavaScript #}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
-
-{# Display django.contrib.messages as Bootstrap alerts #}
-{% bootstrap_messages %}
-
+<!DOCTYPE html>
 <html>
+
 <head>
-<style>
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #333;
-}
-
-li {
-  float: left;
-  border-right:1px solid #bbb;
-}
-
-li:last-child {
-  border-right: none;
-}
-
-li a {
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
-
-li a:hover:not(.active) {
-  background-color: #111;
-}
-
-.active {
-  background-color: #04AA6D;
-}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="//www.twilio.com/marketing/bundles/marketing/img/favicons/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.1/css/bulma.min.css" />
+  <style>
+    .rounded-edges {
+      border-radius: 0.25rem;
+    }
+  </style>
+  <title>All Chat Rooms</title>
 </head>
+
 <body>
-
-<ul>
-  <li><a class="active" href="{% url 'studyapp:index' %}">Home</a></li>
-  {# <li><a href="{% url 'studyapp:chat' %}">Chat</a></li> #}
-  <li><a href="{% url 'studyapp:courses' %}">Courses</a></li>
-  <li style="float:right"><a href="{% url 'studyapp:profile' %}">Profile</a></li>
-</ul>
-
+  <section class="hero is-info">
+    <div class="hero-body has-text-centered">
+      <div class="container">
+        <h1 class="title is-2">
+          Twilio Chat
+        </h1>
+        <h2 class="subtitle is-5">
+          An exploration into Twilio Programmable Chat.
+          <br/> Join one of the rooms below to start your adventure
+        </h2>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="columns">
+        {% for room in rooms %}
+        <div class="column">
+          <div class="card rounded-edges">
+            <div class="card-content">
+              <p class="title is-4">{{room.name}}</p>
+              <div class="content">
+                <p>
+                  {{room.description}}
+                </p>
+                <a href="rooms/{{room.slug}}" class="button">Join Room</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
 </body>
 </html>
 
-{% if latest_reply_list %}
-    <ul>
-    {% for meeting in latest_reply_list %}
-        <li><a href="{% url 'studyapp:detail' meeting.id %}">{{ meeting.post_text }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No meetings are available.</p>
-{% endif %}
