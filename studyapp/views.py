@@ -138,6 +138,8 @@ def token(request):
     identity = request.GET.get('identity', fake.user_name())
     device_id = request.GET.get('device', 'default')  # unique device ID
 
+    # print("token views")
+
     account_sid = settings.TWILIO_ACCOUNT_SID
     api_key = settings.TWILIO_API_KEY
     api_secret = settings.TWILIO_API_SECRET
@@ -155,7 +157,7 @@ def token(request):
 
     response = {
         'identity': identity,
-        'token': token.to_jwt().decode('utf-8')
+        'token': token.to_jwt()
     }
 
     return JsonResponse(response)
