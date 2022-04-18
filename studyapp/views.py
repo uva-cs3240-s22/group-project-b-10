@@ -8,7 +8,6 @@ from django.utils import timezone
 from django.db.models import Q
 from .models import Profile
 
-<<<<<<< HEAD
 # see https://www.twilio.com/blog/2018/05/build-chat-python-django-applications-programmable-chat.html
 from django.conf import settings
 from django.http import JsonResponse
@@ -17,10 +16,8 @@ from twilio.jwt.access_token import AccessToken
 from twilio.jwt.access_token.grants import ChatGrant
 
 from .models import Meeting, Reply, Course, Profile, Room
-=======
 from .forms import MeetingCreateForm
 from .models import Meeting, Reply, Course, Profile
->>>>>>> meetings
 import requests
 
 
