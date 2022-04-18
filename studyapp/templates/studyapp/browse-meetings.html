@@ -19,6 +19,7 @@
         <tr>
         <!-- <th scope="col">#</th> -->
         <th scope="col">Class</th>
+        <th scope="col">Description</th>
         <th scope="col">Time</th>
         </tr>
     </thead>
@@ -27,11 +28,13 @@
         <tr>
         <!-- <th scope="row">{{thought.id}}</th> -->
         <!-- I'm not sure if you can get the meeting's course name like this -->
-        <td>{{ meeting.course.course_name }}:</td>
+        <td>{{ meeting.course.course_name }}</td>
+        <td>{{ meeting.post_text }}</td>
         <!-- post_date is probaably the wrong feild, but we will figure it out -->
-        <td>{{ meeting.post_date }}</td>
+        <td>{{ meeting.start_time }}</td>
         </tr>
         {% endfor %}
     </tbody>
   </table>
+  <a class="btn btn-primary" href="/studyapp/create-meetings/" role="button">Create a meeting</a>
 </ul>

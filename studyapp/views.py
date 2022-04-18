@@ -7,6 +7,7 @@ from django.utils import timezone
 # https://learndjango.com/tutorials/django-search-tutorial
 from django.db.models import Q
 
+from .forms import MeetingCreateForm
 from .models import Meeting, Reply, Course, Profile
 import requests
 
@@ -85,6 +86,18 @@ def MeetingView(request):
     template_name = 'studyapp/browse-meetings.html'
     all_meetings = Meeting.objects.order_by('post_date')
     context = {'all_meetings': all_meetings}
+    return render(request, template_name, context)
+
+def CreateMeeting(request):
+    # model = Thought
+    template_name = 'studyapp/create-meetings.html'
+    form = MeetingCreateForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        
+    context = {
+        'form': form 
+        }
     return render(request, template_name, context)
 
 def api_call(request):

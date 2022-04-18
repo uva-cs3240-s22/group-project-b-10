@@ -12,5 +12,6 @@ urlpatterns = [
     path('courses/', views.CoursesView, name='courses'),
     path("search/", views.SearchResultsView.as_view(), name="search_results"),
     path('profile/', views.ProfileView, name='profile'),
-    path('browse-meetings/', views.views.MeetingView, name="browse-meetings")
+    path('browse-meetings/', views.MeetingView, name="browse-meetings"),
+    path('create-meetings/', views.CreateMeeting, name="create-meetings")
 ]
