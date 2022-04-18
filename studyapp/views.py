@@ -6,6 +6,7 @@ from django.utils import timezone
 # I got this from a search tutorial 
 # https://learndjango.com/tutorials/django-search-tutorial
 from django.db.models import Q
+from .models import Profile
 
 # see https://www.twilio.com/blog/2018/05/build-chat-python-django-applications-programmable-chat.html
 from django.conf import settings
@@ -135,7 +136,7 @@ def room_detail(request, slug):
 fake = Faker()
 
 def token(request):
-    identity = request.GET.get('identity', fake.user_name())
+    identity = request.GET.get('identity', Profile.objects.get(user = request.user).name)
     device_id = request.GET.get('device', 'default')  # unique device ID
 
     # print("token views")
