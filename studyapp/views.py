@@ -87,7 +87,18 @@ def ProfileView(request):
     context = {'profile': myProfile}
     return render(request, template_name, context)
 
-
+# https://www.fullstackpython.com/blog/maps-django-web-applications-projects-mapbox.html
+def MapView(request):
+    template_name = 'studyapp/map.html'
+    # myProfile = Profile.objects.get(user = request.user)
+    # context = {'profile': myProfile}
+    # return render(request, template_name)
+    # TODO: move this token to Django settings from an environment variable
+    # found in the Mapbox account settings and getting started instructions
+    # see https://www.mapbox.com/account/ under the "Access tokens" section
+    mapbox_access_token = 'pk.my_mapbox_access_token';#'pk.eyJ1Ijoicm9ucmFuMTIzIiwiYSI6ImNsMjJwOTJ3bjFpbGYzaXFkc242eW9ncHAifQ.Y6LOXAW4nJqm7SCOeH_Qgg';
+    return render(request, template_name,
+                  {'mapbox_access_token': mapbox_access_token })
 
 def api_call(request):
     # find a way to clear the database or update before repopulating
