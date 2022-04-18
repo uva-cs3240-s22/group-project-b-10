@@ -50,7 +50,14 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     "corsheaders",
+    'crispy_forms',
+    'crispy_bootstrap5',
+    'datetimepicker',
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",

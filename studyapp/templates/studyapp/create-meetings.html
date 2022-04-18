@@ -1,0 +1,26 @@
+{# Load the tag library #}
+{% load bootstrap5 %}
+
+{# Load crispy forms to get better looking input spacing #}
+{% load crispy_forms_tags %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+<div class="p-3 mb-2 bg-dark text-white">
+    <figure class="text-center">
+        <h1>{{ 'Make a meeting!'  }}</h1>
+    </figure>
+{% block content %}
+    <form method='POST'>
+        {% csrf_token %}
+        {{ form|crispy}}
+        <a href="/studyapp/browse-meetings/" class="btn btn-secondary btn-lg" role="button">Take me to browse meetings</a>
+        <button type="submit" class="btn btn-primary btn-lg btn-light">Submit</button>
+        <!-- <a href="{'polls:deepthoughts:list'}">Looking for the list of thoughts?</a> -->
+    </form>
+</div>
+{% endblock %}

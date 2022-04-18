@@ -8,6 +8,7 @@ from django.utils import timezone
 from django.db.models import Q
 from .models import Profile
 
+<<<<<<< HEAD
 # see https://www.twilio.com/blog/2018/05/build-chat-python-django-applications-programmable-chat.html
 from django.conf import settings
 from django.http import JsonResponse
@@ -16,6 +17,10 @@ from twilio.jwt.access_token import AccessToken
 from twilio.jwt.access_token.grants import ChatGrant
 
 from .models import Meeting, Reply, Course, Profile, Room
+=======
+from .forms import MeetingCreateForm
+from .models import Meeting, Reply, Course, Profile
+>>>>>>> meetings
 import requests
 
 
@@ -99,6 +104,25 @@ def MapView(request):
     mapbox_access_token = 'pk.my_mapbox_access_token';#'pk.eyJ1Ijoicm9ucmFuMTIzIiwiYSI6ImNsMjJwOTJ3bjFpbGYzaXFkc242eW9ncHAifQ.Y6LOXAW4nJqm7SCOeH_Qgg';
     return render(request, template_name,
                   {'mapbox_access_token': mapbox_access_token })
+# idea here is we let users browse all the upcoming meetings, so they can add the ones they want
+def MeetingView(request):
+    model = Meeting
+    template_name = 'studyapp/browse-meetings.html'
+    all_meetings = Meeting.objects.order_by('post_date')
+    context = {'all_meetings': all_meetings}
+    return render(request, template_name, context)
+
+def CreateMeeting(request):
+    # model = Thought
+    template_name = 'studyapp/create-meetings.html'
+    form = MeetingCreateForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        
+    context = {
+        'form': form 
+        }
+    return render(request, template_name, context)
 
 def api_call(request):
     # find a way to clear the database or update before repopulating
@@ -113,12 +137,13 @@ def api_call(request):
         # make sure there are no repeating classes
     class_list = get_data()['class_schedules']['records']
 
-    i = 0
+    # i = 0
     previous_course_title = ""
     for c in class_list:
-        i+=1
-        if(i>=2000):
-            break
+        # I'm commenting this part out because I think we want to load every class 
+        # i+=1
+        # if(i>=2000):
+        #     break
 
         # print(c)
         if c[-1] == "2022 Spring":
