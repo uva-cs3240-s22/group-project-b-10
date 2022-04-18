@@ -1,20 +1,40 @@
+<!--http://localhost:8000/accounts/google/login/-->
+{# Load the tag library #}
+{% load bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+{% load socialaccount %}
+
 <!DOCTYPE html>
+
 <html>
 
 <head>
-  <meta charset="utf-8">
+
+    {% if user.is_authenticated %}
+        <title>All Chat Rooms</title>
+          <link rel="shortcut icon" href="//www.twilio.com/marketing/bundles/marketing/img/favicons/favicon.ico">
+        <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="shortcut icon" href="//www.twilio.com/marketing/bundles/marketing/img/favicons/favicon.ico">
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.1/css/bulma.min.css" />
   <style>
     .rounded-edges {
       border-radius: 0.25rem;
     }
   </style>
-  <title>All Chat Rooms</title>
+    {% else %}
+        <title>Study Buddy Login</title>
+    {% endif %}
 </head>
 
 <body>
+{% if user.is_authenticated %}
   <section class="hero is-info">
     <div class="hero-body has-text-centered">
       <div class="container">
@@ -49,6 +69,43 @@
       </div>
     </div>
   </section>
+
+{% else %}
+
+    <h1>StudyBuddy Login </h1>
+    <section class="login-block">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    <form class="md-float-material form-material" action="#" method="POST">
+                        <div class="auth-box card">
+                            <div class="card-block">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h3 class="text-center heading">Create your StudyBuddy Account Here!</h3>
+                                    </div>
+                                </div>
+                                <div class="form-group form-primary"> <input type="text" class="form-control" name="first_name" value="" placeholder="Display name" id="first_name"> </div>
+                                <div class="form-group form-primary"> <input type="text" class="form-control" name="email" value="" placeholder="Email" id="email"> </div>
+                                <div class="form-group form-primary"> <input type="password" class="form-control" name="password" placeholder="Password" value="" id="password"> </div>
+                                <div class="form-group form-primary"> <input type="password" class="form-control" name="password_confirm" placeholder="Repeat password" value="" id="password_confirm"> </div>
+                                <div class="row">
+                                    <div class="col-md-12"> <input type="submit" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20" name="submit" value="Signup Now"> <!-- <button type="button" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20"><i class="fa fa-lock"></i> Signup Now </button> -->
+                                    </div>
+                                </div>
+                                <div class="or-container">
+                                    <div class="line-separator"></div>
+                                    <div class="or-label">or</div>
+                                    <div class="line-separator"></div>
+                                <p class="text-inverse text-center">Sign up using your Google Account: <a href="{% provider_login_url 'google' %}">Google Login</a></p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endif %}
 </body>
 </html>
 
