@@ -4,6 +4,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib import admin
 from django.contrib.auth.models import User
+from django.contrib.postgres.fields import ArrayField
 
 # Create your models here.
 class Course(models.Model):
@@ -19,23 +20,8 @@ class Course(models.Model):
     def __str__(self):
         return self.course_name
 
-class Meeting(models.Model):
-    post_text = models.CharField(max_length=200)
-    post_date = models.DateTimeField('date posted')
-    def __str__(self):
-        return self.post_text
-    @admin.display(
-        boolean=True,
-        ordering='post_date',
-        description='Posted recently?',
-    )
-    def was_posted_recently(self):
-        now = timezone.now()
-        return now - datetime.timedelta(days=1) <= self.post_date <= now
-
-
 class Reply(models.Model):
-    post = models.ForeignKey(Meeting, on_delete=models.CASCADE)
+    post = models.ForeignKey('Meeting', on_delete=models.CASCADE)
     choice_text = models.CharField(max_length=200)
     votes = models.IntegerField(default=0)
     def __str__(self):
@@ -50,6 +36,11 @@ class Profile(models.Model):
     friends = models.CharField(max_length=200)  # Eventually should be array
     enrolled_courses = models.CharField(max_length=200)  # Eventually should be array
     selected_courses = models.CharField(max_length=200)  # Eventually should be array
+    # a user's/profile's relationship to meetings is many to many.
+    # A meeting might have many profiles
+    # A profile might have many meetings
+    meetings = models.ManyToManyField('Meeting')
+
 
     def __str__(self):
         return f'{self.user.username} Profile'
@@ -64,3 +55,29 @@ class Room(models.Model):
     def __str__(self):
         """Returns human-readable representation of the model instance."""
         return self.name
+class Meeting(models.Model):
+    # should meeting have a course associated with it?
+    # course is a many to one relationship so we use models.ForeignKey()
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, default=None)
+    # we want location data
+    # for now address
+    location = models.CharField(max_length=400, default=None)
+    # person who created meeting
+    buddies = models.ManyToManyField(Profile)
+    # partners = models.ForeignKey(Profile, on_delete=models.CASCADE, default = None)
+    # we want time
+    start_time = post_date = models.DateTimeField('Start time', default=None)
+    end_time = models.DateTimeField('End time', default=None)
+
+    post_text = models.CharField(max_length=200)
+    post_date = models.DateTimeField('date posted', default=timezone.now)
+    def __str__(self):
+        return self.post_text
+    @admin.display(
+        boolean=True,
+        ordering='post_date',
+        description='Posted recently?',
+    )
+    def was_posted_recently(self):
+        now = timezone.now()
+        return now - datetime.timedelta(days=1) <= self.post_date <= now

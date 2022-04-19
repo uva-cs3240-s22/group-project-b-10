@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<style>
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+  border-right:1px solid #bbb;
+}
+
+li:last-child {
+  border-right: none;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #111;
+}
+
+.active {
+  background-color: #04AA6D;
+}
+</style>
+</head>
+
+<ul>
+    <li><a href="{% url 'studyapp:all_rooms' %}">Home</a></li>
+    <li><a href="{% url 'studyapp:browse-meetings' %}">Browse Meetings</a></li>
+    <li><a href="{% url 'studyapp:create-meetings' %}">Create Meetings</a></li>
+    <li><a href="{% url 'studyapp:courses' %}">Courses</a></li>
+    <li><a class="active" href="{% url 'studyapp:map' %}">Map</a></li>
+    <li style="float:right"><a href="{% url 'studyapp:profile' %}">Profile</a></li>
+    {# <li style="float:right"><a href="{% url 'logout' %}">Logout</a></li> #}
+</ul>
+ <meta charset="utf-8">
+    <title>Mapbox</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="map" width="100%" style='height:400px'></div>
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1Ijoicm9ucmFuMTIzIiwiYSI6ImNsMjJwOTJ3bjFpbGYzaXFkc242eW9ncHAifQ.Y6LOXAW4nJqm7SCOeH_Qgg';
+    const map = new mapboxgl.Map({
+        container: 'map', // container ID
+        style: 'mapbox://styles/mapbox/navigation-night-v1', // style URL
+        center: [-78.4790, 38.02990], // starting position [lng, lat]
+        zoom: 9 // starting zoom
+    });
+</script>
+
+</body>
+</html>

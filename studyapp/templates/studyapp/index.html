@@ -8,63 +8,150 @@
 
 {# Display django.contrib.messages as Bootstrap alerts #}
 {% bootstrap_messages %}
+{% load socialaccount %}
+
+<!--<!DOCTYPE html>-->
 
 <html>
 <head>
-<style>
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #333;
-}
-
-li {
-  float: left;
-  border-right:1px solid #bbb;
-}
-
-li:last-child {
-  border-right: none;
-}
-
-li a {
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
-
-li a:hover:not(.active) {
-  background-color: #111;
-}
-
-.active {
-  background-color: #04AA6D;
-}
 </style>
+    {% if user.is_authenticated %}
+                <style>
+        ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          background-color: #333;
+        }
+
+        li {
+          float: left;
+          border-right:1px solid #bbb;
+        }
+
+        li:last-child {
+          border-right: none;
+        }
+
+        li a {
+          display: block;
+          color: white;
+          text-align: center;
+          padding: 14px 16px;
+          text-decoration: none;
+        }
+
+        li a:hover:not(.active) {
+          background-color: #111;
+        }
+
+        .active {
+          background-color: #04AA6D;
+        }
+        </style>
+        </head>
+        <ul>
+
+            <li><a class="active" href="{% url 'studyapp:all_rooms' %}">Home</a></li>
+            <li><a href="{% url 'studyapp:browse-meetings' %}">Browse Meetings</a></li>
+            <li><a href="{% url 'studyapp:create-meetings' %}">Create Meetings</a></li>
+            <li><a href="{% url 'studyapp:courses' %}">Courses</a></li>
+            <li><a href="{% url 'studyapp:map' %}">Map</a></li>
+            <li style="float:right"><a href="{% url 'logout' %}">Logout</a></li>
+            <li style="float:right"><a href="{% url 'studyapp:profile' %}">Profile</a></li>
+        </ul>
+        <title>All Chat Rooms</title>
+          <link rel="shortcut icon" href="//www.twilio.com/marketing/bundles/marketing/img/favicons/favicon.ico">
+        <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.1/css/bulma.min.css" />
+  <style>
+    .rounded-edges {
+      border-radius: 0.25rem;
+    }
+  </style>
+    {% else %}
+        <title>Study Buddy Login</title>
+    {% endif %}
 </head>
+
 <body>
+{% if user.is_authenticated %}
 
-<ul>
-  <li><a class="active" href="{% url 'studyapp:index' %}">Home</a></li>
-  {# <li><a href="{% url 'studyapp:chat' %}">Chat</a></li> #}
-  <li><a href="{% url 'studyapp:courses' %}">Courses</a></li>
-  <li style="float:right"><a href="{% url 'studyapp:profile' %}">Profile</a></li>
-</ul>
+  <section class="hero is-info">
+    <div class="hero-body has-text-centered">
+      <div class="container">
+        <h1 class="title is-2">
+          Twilio Chat
+        </h1>
+        <h2 class="subtitle is-5">
+          An exploration into Twilio Programmable Chat.
+          <br/> Join one of the rooms below to start your adventure
+        </h2>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="columns">
+        {% for room in rooms %}
+        <div class="column">
+          <div class="card rounded-edges">
+            <div class="card-content">
+              <p class="title is-4">{{room.name}}</p>
+              <div class="content">
+                <p>
+                  {{room.description}}
+                </p>
+                <a href="rooms/{{room.slug}}" class="button">Join Room</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
 
+{% else %}
+
+    <h1>StudyBuddy Login </h1>
+    <section class="login-block">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    <form class="md-float-material form-material" action="#" method="POST">
+                        <div class="auth-box card">
+                            <div class="card-block">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h3 class="text-center heading">Create your StudyBuddy Account Here!</h3>
+                                    </div>
+                                </div>
+                                <div class="form-group form-primary"> <input type="text" class="form-control" name="first_name" value="" placeholder="Display name" id="first_name"> </div>
+                                <div class="form-group form-primary"> <input type="text" class="form-control" name="email" value="" placeholder="Email" id="email"> </div>
+                                <div class="form-group form-primary"> <input type="password" class="form-control" name="password" placeholder="Password" value="" id="password"> </div>
+                                <div class="form-group form-primary"> <input type="password" class="form-control" name="password_confirm" placeholder="Repeat password" value="" id="password_confirm"> </div>
+                                <div class="row">
+                                    <div class="col-md-12"> <input type="submit" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20" name="submit" value="Signup Now"> <!-- <button type="button" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20"><i class="fa fa-lock"></i> Signup Now </button> -->
+                                    </div>
+                                </div>
+                                <div class="or-container">
+                                    <div class="line-separator"></div>
+                                    <div class="or-label">or</div>
+                                    <div class="line-separator"></div>
+                                <p class="text-inverse text-center">Sign up using your Google Account: <a href="{% provider_login_url 'google' %}">Google Login</a></p>
+                            </div>
+                        </div>
+                     </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endif %}
 </body>
 </html>
-
-{% if latest_reply_list %}
-    <ul>
-    {% for meeting in latest_reply_list %}
-        <li><a href="{% url 'studyapp:detail' meeting.id %}">{{ meeting.post_text }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No meetings are available.</p>
-{% endif %}
 

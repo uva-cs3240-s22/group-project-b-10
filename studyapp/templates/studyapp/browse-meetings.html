@@ -1,0 +1,90 @@
+<!-- templates/browse-meetings.html -->
+{# Load the tag library #}
+{% load bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+<head>
+<style>
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+  border-right:1px solid #bbb;
+}
+
+li:last-child {
+  border-right: none;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #111;
+}
+
+.active {
+  background-color: #04AA6D;
+}
+</style>
+</head>
+<body>
+
+<ul>
+    <li><a href="{% url 'studyapp:all_rooms' %}">Home</a></li>
+    <li><a class="active" href="{% url 'studyapp:browse-meetings' %}">Browse Meetings</a></li>
+    <li><a href="{% url 'studyapp:create-meetings' %}">Create Meetings</a></li>
+    <li><a href="{% url 'studyapp:courses' %}">Courses</a></li>
+    <li><a href="{% url 'studyapp:map' %}">Map</a></li>
+    <li style="float:right"><a href="{% url 'studyapp:profile' %}">Profile</a></li>
+    {# <li style="float:right"><a href="{% url 'logout' %}">Logout</a></li> #}
+</ul>
+</body>
+
+<div class="p-3 mb-2 bg-dark text-white">
+  <figure class="text-center">
+      <h1>{{ 'Browse Meetings'  }}</h1>
+  </figure>
+</div>
+
+<ul>
+  <table class="table table-striped table-light">
+    <thead>
+        <tr>
+        <!-- <th scope="col">#</th> -->
+        <th scope="col">Class</th>
+        <th scope="col">Description</th>
+        <th scope="col">Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for meeting in all_meetings %}
+        <tr>
+        <!-- <th scope="row">{{thought.id}}</th> -->
+        <!-- I'm not sure if you can get the meeting's course name like this -->
+        <td>{{ meeting.course.course_name }}</td>
+        <td>{{ meeting.post_text }}</td>
+        <!-- post_date is probaably the wrong feild, but we will figure it out -->
+        <td>{{ meeting.start_time }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+  <a class="btn btn-primary" href="/create-meetings/" role="button">Create a meeting</a>
+</ul>
