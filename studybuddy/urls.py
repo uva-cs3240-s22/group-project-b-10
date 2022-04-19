@@ -23,7 +23,7 @@ urlpatterns = [
     re_path(r'^', include('studyapp.urls')),
     # path('', TemplateView.as_view(template_name="index.html")),
     path('accounts/', include('allauth.urls')),
-    path('logout', LogoutView.as_view()),
+    path('logout', LogoutView.as_view(), name = 'logout'),
     # path('studyapp/', include('studyapp.urls')),
     path('admin/', admin.site.urls),
 ]
