@@ -18,7 +18,7 @@
 {% load socialaccount %}
 <html>
 <body>
-<h1>My Google OAuth Project </h1>
+<h1>StudyBuddy Login </h1>
 {% if user.is_authenticated %}
   <p>Welcome, You are logged in as {{ user.username }}</p>
 {% else %}
@@ -31,7 +31,7 @@
                             <div class="card-block">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <h3 class="text-center heading">Create your BBBootstrap account. It’s free and only takes a minute.</h3>
+                                        <h3 class="text-center heading">Create your StudyBuddy Account Here!</h3>
                                     </div>
                                 </div>
                                 <div class="form-group form-primary"> <input type="text" class="form-control" name="first_name" value="" placeholder="Display name" id="first_name"> </div>
@@ -46,11 +46,7 @@
                                     <div class="line-separator"></div>
                                     <div class="or-label">or</div>
                                     <div class="line-separator"></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12"> <a class="btn btn-lg btn-google btn-block text-uppercase btn-outline" href="#"><img src="https://img.icons8.com/color/16/000000/google-logo.png"> Signup Using Google</a> </div>
-                                </div> <br>
-                                <p class="text-inverse text-center">Already have an account? <a href="{% provider_login_url 'google' %}">Login With Google</a></p>
+                                <p class="text-inverse text-center">Sign up using your Google Account: <a href="{% provider_login_url 'google' %}">Google Login</a></p>
                             </div>
                         </div>
                     </form>
@@ -61,4 +57,3 @@
 {% endif %}
 </body>
 </html>
-
