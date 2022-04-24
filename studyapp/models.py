@@ -55,6 +55,7 @@ class Room(models.Model):
     def __str__(self):
         """Returns human-readable representation of the model instance."""
         return self.name
+
 class Meeting(models.Model):
     # should meeting have a course associated with it?
     # course is a many to one relationship so we use models.ForeignKey()
