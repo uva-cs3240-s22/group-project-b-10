@@ -19,6 +19,7 @@
         <tr>
         <!-- <th scope="col">#</th> -->
         <th scope="col">Department</th>
+            <th scope="col">Course Number</th>
         <th scope="col">Course Title</th>
         </tr>
     </thead>
@@ -26,7 +27,8 @@
         {% for course in object_list %}
         <tr>
         <!-- <th scope="row">{{thought.id}}</th> -->
-        <td>{{ course.department }}:</td>
+        <td>{{ course.department }}</td>
+            <td>{{ course.course_number }}</td>
         <td>{{ course.course_name }}</td>
         </tr>
         {% endfor %}

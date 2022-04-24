@@ -11,7 +11,9 @@ class Course(models.Model):
 #     field: name, id, etc
     objects = models.Manager()
     course_name = models.CharField(max_length=200)
-    department = models.CharField(max_length=200, default="DEP")
+    course_number = models.CharField(max_length=5, default='0000')
+    department = models.CharField(max_length=10, default="DEP")
+    course_title = models.CharField(max_length=50, default='')
     # course_id = models.CharField(max_length=50)
     # @admin.display(
     #     boolean=True,
