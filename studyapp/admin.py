@@ -26,4 +26,8 @@ class MeetingAdmin(admin.ModelAdmin):
 
 admin.site.register(Meeting, MeetingAdmin)
 admin.site.register(Profile)
+<<<<<<< HEAD
 admin.site.register(Room)
+=======
+admin.site.register(Course)
+>>>>>>> b76439fb01eca5582f9441c6f4c4f0451677f7f9
