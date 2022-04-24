@@ -16,7 +16,7 @@ from twilio.jwt.access_token import AccessToken
 from twilio.jwt.access_token.grants import ChatGrant
 
 from .models import Meeting, Reply, Course, Profile, Room
-from .forms import MeetingCreateForm
+from .forms import MeetingCreateForm, EnrollForm
 from .models import Meeting, Reply, Course, Profile
 import requests
 
@@ -110,7 +110,6 @@ def MeetingView(request):
     return render(request, template_name, context)
 
 def CreateMeeting(request):
-    # model = Thought
     template_name = 'studyapp/create-meetings.html'
     form = MeetingCreateForm(request.POST or None)
     if form.is_valid():
@@ -119,6 +118,21 @@ def CreateMeeting(request):
     context = {
         'form': form 
         }
+
+    return render(request, template_name, context)
+
+# added course as a parameter so hopefully it enrolls that course?
+def Enroll(request, id):
+    template_name = 'studyapp/search-results.html'
+    obj = get_object_or_404(Course, id = id)
+    form = EnrollForm(request.POST or None, instance = obj)
+    if form.is_valid():
+        form.save()
+    
+    context = {
+        'form': form 
+        }
+
     return render(request, template_name, context)
 
 def api_call(request):

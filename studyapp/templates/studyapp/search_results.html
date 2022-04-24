@@ -20,6 +20,7 @@
         <!-- <th scope="col">#</th> -->
         <th scope="col">Department</th>
         <th scope="col">Course Title</th>
+        <th scope="col">Button</th>
         </tr>
     </thead>
     <tbody>
@@ -28,6 +29,7 @@
         <!-- <th scope="row">{{thought.id}}</th> -->
         <td>{{ course.department }}:</td>
         <td>{{ course.course_name }}</td>
+        <td><a class="btn btn-primary" role="button">Enroll</a></td>
         </tr>
         {% endfor %}
     </tbody>
