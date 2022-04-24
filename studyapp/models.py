@@ -11,7 +11,9 @@ class Course(models.Model):
 #     field: name, id, etc
     objects = models.Manager()
     course_name = models.CharField(max_length=200)
-    department = models.CharField(max_length=200, default="DEP")
+    course_number = models.CharField(max_length=5, default='0000')
+    department = models.CharField(max_length=10, default="DEP")
+    course_title = models.CharField(max_length=50, default='')
     # course_id = models.CharField(max_length=50)
     # @admin.display(
     #     boolean=True,
@@ -55,6 +57,7 @@ class Room(models.Model):
     def __str__(self):
         """Returns human-readable representation of the model instance."""
         return self.name
+
 class Meeting(models.Model):
     # should meeting have a course associated with it?
     # course is a many to one relationship so we use models.ForeignKey()
