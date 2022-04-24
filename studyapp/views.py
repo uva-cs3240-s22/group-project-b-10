@@ -48,7 +48,7 @@ class SearchResultsView(generic.ListView):
     def get_queryset(self):  
         query = self.request.GET.get("q")
         object_list = Course.objects.filter(
-            Q(course_name__icontains=query) | Q(department__icontains=query)
+            Q(course_title__icontains=query) | Q(course_name__icontains=query) | Q(department__icontains=query) | Q(course_number__icontains=query)
         )
         return object_list
 
@@ -157,14 +157,15 @@ def api_call(request):
         #     break
 
         # print(c)
-        if c[-1] == "2022 Spring":
-            course_info = str(c[0]) + ' ' + str(c[1]) + '-' + str(c[2])
-            department_code = str(c[0])
-            course_title = str(c[4])
+        if c[-1] == "2022 Fall":
+            course_title = str(c[0]) + ' ' + str(c[1])
+            department_code = str(c[0]) # Subject
+            course_number = str(c[1]) # catalog_number
+            course_name = str(c[4]) # Class Title
             if (previous_course_title != course_title):
             # print(course_info)
                 previous_course_title = course_title
-                Course.objects.create(course_name=course_title, department = department_code)
+                Course.objects.create(course_name=course_name, course_number= course_number,department = department_code, course_title=course_title)
 
     # maybe display something on page when updated --> optional
     return render(request, 'studyapp/api-call.html')
