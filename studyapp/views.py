@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
@@ -16,7 +16,7 @@ from twilio.jwt.access_token import AccessToken
 from twilio.jwt.access_token.grants import ChatGrant
 
 from .models import Meeting, Reply, Course, Profile, Room
-from .forms import MeetingCreateForm, EnrollForm
+from .forms import MeetingCreateForm
 from .models import Meeting, Reply, Course, Profile
 import requests
 
@@ -122,18 +122,35 @@ def CreateMeeting(request):
     return render(request, template_name, context)
 
 # added course as a parameter so hopefully it enrolls that course?
-def Enroll(request, id):
-    template_name = 'studyapp/search-results.html'
-    obj = get_object_or_404(Course, id = id)
-    form = EnrollForm(request.POST or None, instance = obj)
-    if form.is_valid():
-        form.save()
+def enroll_user_in_course(request):
     
-    context = {
-        'form': form 
-        }
+    if request.method != 'POST':
+        return  HttpResponse('Method Not Allowed', status=405)
+    # where we take them back to
+    next_url = request.POST['next']
+    if not request.user.is_authenticated:
+        return HttpResponse('Unauthorized', status=401)
+    # Now assuming user is authenticated correctly
+    # get the current user 
+    myProfile = Profile.objects.get(user = request.user)
+    course_id = request.POST['course_id']
+    course = Course.objects.get(id = course_id)
+    myProfile.profile_courses.add(course)
+    myProfile.save()
 
-    return render(request, template_name, context)
+    return redirect(next_url)
+#  def Enroll(request, id):
+#     template_name = 'studyapp/search-results.html'
+#     obj = get_object_or_404(Course, id = id)
+#     form = EnrollForm(request.POST or None, instance = obj)
+#     if form.is_valid():
+#         form.save()
+    
+#     context = {
+#         'form': form 
+#         }
+
+#     return render(request, template_name, context)
 
 def api_call(request):
     # find a way to clear the database or update before repopulating
