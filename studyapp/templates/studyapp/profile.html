@@ -94,7 +94,13 @@ li a:hover:not(.active) {
   <p>Email: {{profile.email}}</p>
   <p>Username: {{user.username}}</p>
   <p>Friends: {{profile.friends}}</p>
-    <p>Courses: {{profile.courses}}</p>
+    <p>Courses: 
+      <ul class="list-group">
+      {% for course in profile.profile_courses.all %}
+          <li class="list-group-item">{{course.course_name}}</li>
+      {% endfor %}
+      </ul>
+      </p>
 </div>
 </body>
 </html>
