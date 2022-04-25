@@ -42,6 +42,7 @@ class Profile(models.Model):
     # A meeting might have many profiles
     # A profile might have many meetings
     meetings = models.ManyToManyField('Meeting')
+    profile_courses = models.ManyToManyField('Course')
 
 
     def __str__(self):
@@ -57,6 +58,7 @@ class Room(models.Model):
     def __str__(self):
         """Returns human-readable representation of the model instance."""
         return self.name
+
 
 class Meeting(models.Model):
     # should meeting have a course associated with it?

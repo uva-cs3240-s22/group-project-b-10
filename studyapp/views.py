@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
@@ -110,7 +110,6 @@ def MeetingView(request):
     return render(request, template_name, context)
 
 def CreateMeeting(request):
-    # model = Thought
     template_name = 'studyapp/create-meetings.html'
     form = MeetingCreateForm(request.POST or None)
     if form.is_valid():
@@ -119,7 +118,56 @@ def CreateMeeting(request):
     context = {
         'form': form 
         }
+
     return render(request, template_name, context)
+
+# added course as a parameter so hopefully it enrolls that course?
+def enroll_user_in_course(request):
+    
+    if request.method != 'POST':
+        return  HttpResponse('Method Not Allowed', status=405)
+    # where we take them back to
+    next_url = request.POST['next']
+    if not request.user.is_authenticated:
+        return HttpResponse('Unauthorized', status=401)
+    # Now assuming user is authenticated correctly
+    # get the current user 
+    myProfile = Profile.objects.get(user = request.user)
+    course_id = request.POST['course_id']
+    course = Course.objects.get(id = course_id)
+    myProfile.profile_courses.add(course)
+    myProfile.save()
+
+    return redirect(next_url)
+
+def drop_course(request):
+    if request.method != 'POST':
+        return  HttpResponse('Method Not Allowed', status=405)
+    # where we take them back to
+    next_url = request.POST['next']
+    if not request.user.is_authenticated:
+        return HttpResponse('Unauthorized', status=401)
+    # Now assuming user is authenticated correctly
+    # get the current user 
+    myProfile = Profile.objects.get(user = request.user)
+    course_id = request.POST['course_id']
+    course = Course.objects.get(id = course_id)
+    myProfile.profile_courses.remove(course)
+    myProfile.save()
+    return redirect(next_url)
+
+#  def Enroll(request, id):
+#     template_name = 'studyapp/search-results.html'
+#     obj = get_object_or_404(Course, id = id)
+#     form = EnrollForm(request.POST or None, instance = obj)
+#     if form.is_valid():
+#         form.save()
+    
+#     context = {
+#         'form': form 
+#         }
+
+#     return render(request, template_name, context)
 
 def api_call(request):
     # find a way to clear the database or update before repopulating

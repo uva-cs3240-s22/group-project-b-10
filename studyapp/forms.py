@@ -1,5 +1,5 @@
 from django import forms
-from .models import Meeting
+from .models import Meeting, Profile
 
 class MeetingCreateForm(forms.ModelForm):
     class Meta:
@@ -14,3 +14,10 @@ class MeetingCreateForm(forms.ModelForm):
             'end_time',
             'post_text', 
         ]
+
+# class EnrollForm(forms.ModelForm):
+#     class Meta:
+#         model = Profile
+#         fields = [
+#             'profile_courses',
+#         ]
