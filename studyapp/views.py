@@ -139,6 +139,23 @@ def enroll_user_in_course(request):
     myProfile.save()
 
     return redirect(next_url)
+
+def drop_course(request):
+    if request.method != 'POST':
+        return  HttpResponse('Method Not Allowed', status=405)
+    # where we take them back to
+    next_url = request.POST['next']
+    if not request.user.is_authenticated:
+        return HttpResponse('Unauthorized', status=401)
+    # Now assuming user is authenticated correctly
+    # get the current user 
+    myProfile = Profile.objects.get(user = request.user)
+    course_id = request.POST['course_id']
+    course = Course.objects.get(id = course_id)
+    myProfile.profile_courses.remove(course)
+    myProfile.save()
+    return redirect(next_url)
+
 #  def Enroll(request, id):
 #     template_name = 'studyapp/search-results.html'
 #     obj = get_object_or_404(Course, id = id)

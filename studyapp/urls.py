@@ -17,5 +17,6 @@ urlpatterns = [
     path('map/', views.MapView, name='map'),
     path('browse-meetings/', views.MeetingView, name="browse-meetings"),
     path('create-meetings/', views.CreateMeeting, name="create-meetings"),
-    path('enroll/', views.enroll_user_in_course, name = "enroll")
+    path('enroll/', views.enroll_user_in_course, name = "enroll"),
+    path('drop', views.drop_course, name = "drop"),
 ]
