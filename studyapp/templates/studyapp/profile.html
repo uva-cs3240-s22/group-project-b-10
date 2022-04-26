@@ -119,12 +119,38 @@ li a:hover:not(.active) {
             {% endfor %}
         </tbody>
       </table> 
-      <!-- <ul class="list-group">
-      {% for course in profile.profile_courses.all %}
-          <li class="list-group-item">{{course.department}}{{course.course_number}}:{{course.course_name}}</li>
-      {% endfor %}
-      </ul> -->
       </p>
+      <!-- this is devoted to making a meetings table -->
+      <p>Meetings:
+        <table class="table table-striped table-light">
+          <thead>
+              <tr>
+              <!-- <th scope="col">#</th> -->
+              <th scope="col">Course</th>
+              <th scope="col">Meeting</th>
+              <th scope="col">Time</th>
+              <th scope="col">Leave meeting?</th>
+              </tr>
+          </thead>
+          <tbody>
+            {% for meeting in profile.meetings.all %}
+              <tr>
+              <!-- <th scope="row">{{thought.id}}</th> -->
+              <td>{{meeting.course}}</td>
+              <td>{{meeting.post_text}}</td>
+              <td>From {{meeting.start_time}} to {{meeting.end_time}}</td>
+              <form action="{% url 'studyapp:leave' %}" method = "POST">
+                {% csrf_token %}
+                <input type="hidden" value="{{  meeting.id  }}" name="meeting_id">
+                <input type="hidden" value="{{  request.get_full_path  }}" name="next">
+              <td>
+                <input type="submit" class="btn btn-danger" role="button" value="Leave"></td>
+                  </form>
+              </tr>
+              {% endfor %}
+          </tbody>
+        </table> 
+        </p>
 </div>
 </body>
 </html>
