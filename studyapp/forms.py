@@ -12,7 +12,8 @@ class MeetingCreateForm(forms.ModelForm):
             'course',
             'start_time',
             'end_time',
-            'post_text', 
+            'post_text',
+            'buddies' 
         ]
 
 # class EnrollForm(forms.ModelForm):

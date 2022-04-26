@@ -156,18 +156,45 @@ def drop_course(request):
     myProfile.save()
     return redirect(next_url)
 
-#  def Enroll(request, id):
-#     template_name = 'studyapp/search-results.html'
-#     obj = get_object_or_404(Course, id = id)
-#     form = EnrollForm(request.POST or None, instance = obj)
-#     if form.is_valid():
-#         form.save()
-    
-#     context = {
-#         'form': form 
-#         }
+def join_meeting(request):
+    if request.method != 'POST':
+        return  HttpResponse('Method Not Allowed', status=405)
+    # where we take them back to
+    next_url = request.POST['next']
+    if not request.user.is_authenticated:
+        return HttpResponse('Unauthorized', status=401)
+    # Now assuming user is authenticated correctly
+    # get the current user 
+    myProfile = Profile.objects.get(user = request.user)
+    meeting_id = request.POST['meeting_id']
+    meeting = Meeting.objects.get(id = meeting_id)
+    # this part appends the meeting to the user
+    myProfile.meetings.add(meeting)
+    myProfile.save()
+    # now we need to append the user to the meeting
+    meeting.buddies.add(myProfile)
+    meeting.save()
+    return redirect(next_url)
 
-#     return render(request, template_name, context)
+def leave_meeting(request):
+    if request.method != 'POST':
+        return  HttpResponse('Method Not Allowed', status=405)
+    # where we take them back to
+    next_url = request.POST['next']
+    if not request.user.is_authenticated:
+        return HttpResponse('Unauthorized', status=401)
+    # Now assuming user is authenticated correctly
+    # get the current user 
+    myProfile = Profile.objects.get(user = request.user)
+    meeting_id = request.POST['meeting_id']
+    meeting = Meeting.objects.get(id = meeting_id)
+    # this part appends the meeting to the user
+    myProfile.meetings.remove(meeting)
+    myProfile.save()
+    # now we need to append the user to the meeting
+    meeting.buddies.remove(myProfile)
+    meeting.save()
+    return redirect(next_url)
 
 def api_call(request):
     # find a way to clear the database or update before repopulating
