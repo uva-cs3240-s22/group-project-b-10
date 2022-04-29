@@ -204,12 +204,14 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-SITE_ID = 4
+# https://stackoverflow.com/questions/9736975/django-admin-doesnotexist-at-admin
+# We had changed this to 1 and then 2 and that was causing issues; 4 seems to be the right number
+SITE_ID=4
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 
 # to remove the additional google sign in page
-ACCOUNT_LOGOUT_ON_GET = True
+# ACCOUNT_LOGOUT_ON_GET = True
 SOCIALACCOUNT_LOGIN_ON_GET = True
