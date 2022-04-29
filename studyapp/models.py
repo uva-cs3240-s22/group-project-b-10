@@ -33,7 +33,7 @@ class Profile(models.Model):
     objects = models.Manager()
     name = models.CharField(max_length=200)
     email = models.CharField(max_length=200)
-    friends = models.CharField(max_length=200)  # Eventually should be array
+    friends = models.ManyToManyField("Profile")
     enrolled_courses = models.CharField(max_length=200)  # Eventually should be array
     selected_courses = models.CharField(max_length=200)  # Eventually should be array
     # a user's/profile's relationship to meetings is many to many.
@@ -45,6 +45,9 @@ class Profile(models.Model):
     def __str__(self):
         return f'{self.user.username} Profile'
 
+class Friend_Request(models.Model):
+    from_user = models.ForeignKey(Profile, related_name='from_user', on_delete=models.CASCADE)
+    to_user = models.ForeignKey(Profile, related_name='to_user', on_delete=models.CASCADE)
 
 class Room(models.Model):
     """Represents chat rooms that users can join"""

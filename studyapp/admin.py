@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Course, Reply, Meeting, Profile
+from .models import Course, Reply, Meeting, Profile, Friend_Request
 
 # Register your models here.
 
@@ -26,3 +26,4 @@ class MeetingAdmin(admin.ModelAdmin):
 
 admin.site.register(Meeting, MeetingAdmin)
 admin.site.register(Profile)
+admin.site.register(Friend_Request)
