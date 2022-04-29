@@ -62,7 +62,7 @@
             <li style="float:right"><a href="{% url 'studyapp:profile' %}">Profile</a></li>
         </ul>
         <title>All Chat Rooms</title>
-          <link rel="shortcut icon" href="//www.twilio.com/marketing/bundles/marketing/img/favicons/favicon.ico">
+<!--          <link rel=icon href="//www.twilio.com/marketing/bundles/marketing/img/favicons/favicon.ico">-->
         <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -77,18 +77,18 @@
     {% endif %}
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
 {% if user.is_authenticated %}
 
   <section class="hero is-info">
     <div class="hero-body has-text-centered">
       <div class="container">
         <h1 class="title is-2">
-          Twilio Chat
+          Welcome to Study Buddy!
         </h1>
         <h2 class="subtitle is-5">
-          An exploration into Twilio Programmable Chat.
-          <br/> Join one of the rooms below to start your adventure
+          Find ways to study that work for you.
+          <br/> To begin studying, enter a room below and begin chatting with your peers
         </h2>
       </div>
     </div>
@@ -154,4 +154,12 @@
 {% endif %}
 </body>
 </html>
+
+<footer class="mt-auto bg-light text-center text-lg-start" id="footer">
+  <!-- Copyright -->
+  <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+    © StudyBuddy 2022
+  </div>
+  <!-- Copyright -->
+</footer>
 

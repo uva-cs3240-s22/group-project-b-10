@@ -71,6 +71,8 @@ li a:hover:not(.active) {
         <th scope="col">Class</th>
         <th scope="col">Description</th>
         <th scope="col">Time</th>
+        <th scope="col">Who's going</th>
+        <th scope="col">Sign up</th>
         </tr>
     </thead>
     <tbody>
@@ -81,10 +83,29 @@ li a:hover:not(.active) {
         <td>{{ meeting.course.course_name }}</td>
         <td>{{ meeting.post_text }}</td>
         <!-- post_date is probaably the wrong feild, but we will figure it out -->
-        <td>{{ meeting.start_time }}</td>
-        </tr>
-        {% endfor %}
+        <td>{{ meeting.start_time }} - {{meeting.end_time}}</td>
+        <td>{%for buddy in meeting.buddies.all %}
+          {{ buddy.name}} 
+        {% endfor %}</td>
+        <td>
+          <form action="{% url 'studyapp:join' %}" method = "POST">
+            {% csrf_token %}
+            <input type="hidden" value="{{  meeting.id  }}" name="meeting_id">
+            <input type="hidden" value="{{  request.get_full_path  }}" name="next">
+            <input type="submit" class="btn btn-success btn-sm" role="button" value="Join">
+              </form>
+        </td>
+      </tr>
+      {% endfor %}
     </tbody>
   </table>
   <a class="btn btn-primary" href="/create-meetings/" role="button">Create a meeting</a>
 </ul>
+
+<footer class="fixed-bottom bg-light text-center text-lg-start" id="footer">
+  <!-- Copyright -->
+  <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+    © StudyBuddy 2022
+  </div>
+  <!-- Copyright -->
+</footer>

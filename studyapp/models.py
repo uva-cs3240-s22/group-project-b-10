@@ -11,7 +11,9 @@ class Course(models.Model):
 #     field: name, id, etc
     objects = models.Manager()
     course_name = models.CharField(max_length=200)
-    department = models.CharField(max_length=200, default="DEP")
+    course_number = models.CharField(max_length=5, default='0000')
+    department = models.CharField(max_length=10, default="DEP")
+    course_title = models.CharField(max_length=50, default='')
     # course_id = models.CharField(max_length=50)
     # @admin.display(
     #     boolean=True,
@@ -40,12 +42,13 @@ class Profile(models.Model):
     # A meeting might have many profiles
     # A profile might have many meetings
     meetings = models.ManyToManyField('Meeting')
+    profile_courses = models.ManyToManyField('Course')
 
 
     def __str__(self):
         return f'{self.user.username} Profile'
 
-
+# https://www.twilio.com/blog/2018/05/build-chat-python-django-applications-programmable-chat.html
 class Room(models.Model):
     """Represents chat rooms that users can join"""
     name = models.CharField(max_length=30)
@@ -55,6 +58,8 @@ class Room(models.Model):
     def __str__(self):
         """Returns human-readable representation of the model instance."""
         return self.name
+
+
 class Meeting(models.Model):
     # should meeting have a course associated with it?
     # course is a many to one relationship so we use models.ForeignKey()
