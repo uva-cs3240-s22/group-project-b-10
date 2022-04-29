@@ -247,7 +247,7 @@ fake = Faker()
 def token(request):
     identity = request.GET.get('identity', Profile.objects.get(user = request.user).name)
     device_id = request.GET.get('device', 'default')  # unique device ID
-
+    # print(device_id)
     # print("token views")
 
     account_sid = settings.TWILIO_ACCOUNT_SID
@@ -256,7 +256,8 @@ def token(request):
     chat_service_sid = settings.TWILIO_CHAT_SERVICE_SID
 
     token = AccessToken(account_sid, api_key, api_secret, identity=identity)
-
+    
+    # print(token)
     # Create a unique endpoint ID for the device
     endpoint = "MyDjangoChatRoom:{0}:{1}".format(identity, device_id)
 
