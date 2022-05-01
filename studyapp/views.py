@@ -117,15 +117,16 @@ def CreateMeeting(request):
     template_name = 'studyapp/create-meetings.html'
     form = MeetingCreateForm(request.POST or None)
     if form.is_valid():
-        f = form.save()
-        print(f.id)
+        new_meeting = form.save()
+        # print(f.id)
         # append the meeting to user profile
-        # myProfile = Profile.objects.get(user = request.user)
+        myProfile = Profile.objects.get(user = request.user)
         # meeting_id = request.POST['meeting_id']
-        # meeting = Meeting.objects.get(id = meeting_id)
+        meeting_id = new_meeting.id
+        meeting = Meeting.objects.get(id = meeting_id)
 
-        # myProfile.meetings.add(meeting)
-        # myProfile.save()
+        myProfile.meetings.add(meeting)
+        myProfile.save()
         
     context = {
         'form': form 
