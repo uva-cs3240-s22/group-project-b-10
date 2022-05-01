@@ -22,4 +22,5 @@ urlpatterns = [
     path('drop/', views.drop_course, name = "drop"),
     path('join/', views.join_meeting, name="join"),
     path('leave', views.leave_meeting, name="leave"),
+    path('meeting-successful.html', views.meeting_successful_view, name="meeting-successful"),
 ]

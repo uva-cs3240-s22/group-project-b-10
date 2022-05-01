@@ -135,6 +135,10 @@ def CreateMeeting(request):
 
     return render(request, template_name, context)
 
+def meeting_successful_view(request):
+    template_name = 'studyapp/meeting-successful.html'
+    return render(request, template_name)
+
 # added course as a parameter so hopefully it enrolls that course?
 def enroll_user_in_course(request):
     
