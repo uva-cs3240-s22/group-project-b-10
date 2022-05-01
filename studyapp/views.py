@@ -114,10 +114,18 @@ def CreateMeeting(request):
     form = MeetingCreateForm(request.POST or None)
     if form.is_valid():
         form.save()
+        # append the meeting to user profile
+        myProfile = Profile.objects.get(user = request.user)
+        meeting_id = request.POST['meeting_id']
+        meeting = Meeting.objects.get(id = meeting_id)
+
+        myProfile.meetings.add(meeting)
+        myProfile.save()
         
     context = {
         'form': form 
         }
+        
 
     return render(request, template_name, context)
 
