@@ -127,6 +127,9 @@ def CreateMeeting(request):
 
         myProfile.meetings.add(meeting)
         myProfile.save()
+
+        meeting.buddies.add(myProfile)
+        meeting.save()
         
     context = {
         'form': form 
