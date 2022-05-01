@@ -5,6 +5,7 @@ from . import views
 app_name = 'studyapp'
 urlpatterns = [
     path('', views.all_rooms, name='all_rooms'),
+    path("favicon.ico", views.favicon),
     re_path(r'token$', views.token, name="token"),
     re_path(r'rooms/(?P<slug>[-\w]+)/$', views.room_detail, name="room_detail"),
     path('<int:pk>/', views.DetailView.as_view(), name='detail'),

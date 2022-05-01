@@ -48,7 +48,7 @@ class Profile(models.Model):
     def __str__(self):
         return f'{self.user.username} Profile'
 
-
+# https://www.twilio.com/blog/2018/05/build-chat-python-django-applications-programmable-chat.html
 class Room(models.Model):
     """Represents chat rooms that users can join"""
     name = models.CharField(max_length=30)
