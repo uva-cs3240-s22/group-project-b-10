@@ -46,7 +46,15 @@ class Profile(models.Model):
     def __str__(self):
         return f'{self.user.username} Profile'
 
+
 # https://www.twilio.com/blog/2018/05/build-chat-python-django-applications-programmable-chat.html
+
+class Friend_Request(models.Model):
+    from_user = models.ForeignKey(Profile, related_name='from_user', on_delete=models.CASCADE)
+    to_user = models.ForeignKey(Profile, related_name='to_user', on_delete=models.CASCADE)
+    objects = models.Manager()
+
+
 class Room(models.Model):
     """Represents chat rooms that users can join"""
     name = models.CharField(max_length=30)
