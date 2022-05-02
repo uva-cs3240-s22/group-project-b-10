@@ -19,4 +19,5 @@ urlpatterns = [
     path('create-meetings/', views.CreateMeeting, name="create-meetings"),
     path('send_friend_request/<int:userID>/', views.send_friend_request, name='send-friend-request'),
     path('accept_friend_request/<int:requestID>/', views.accept_friend_request, name='accept-friend-request'),
+    path('browse-users/', views.FriendView, name="browse-users"),
 ]

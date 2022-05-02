@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
+from django.contrib.auth import get_user_model
 # I got this from a search tutorial 
 # https://learndjango.com/tutorials/django-search-tutorial
 from django.db.models import Q
@@ -214,3 +215,13 @@ def accept_friend_request(request, requestID):
         return HttpResponse('Friend request accepted!')
     else:
         return HttpResponse('Friend request denied')
+
+def FriendView(request):
+    model = Friend_Request
+    template_name = 'studyapp/send-friend-request.html'
+    User = get_user_model()
+    users = User.objects.all()
+    context = {
+        'users': users
+    }
+    return render(request, template_name, context)
