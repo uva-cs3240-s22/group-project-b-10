@@ -57,7 +57,14 @@ class SearchResultsView(generic.ListView):
         object_list = Course.objects.filter(
             Q(course_title__icontains=query) | Q(course_name__icontains=query) | Q(department__icontains=query) | Q(course_number__icontains=query)
         )
-        return object_list
+        my_courses = Profile.objects.get(user = self.request.user).profile_courses.all()
+        final_list = []
+        for ol in object_list:
+            if ol in my_courses:
+                final_list.append((ol, 1))
+            else:
+                final_list.append((ol, 0))
+        return final_list
 
 def vote(request, meeting_id):
     meeting = get_object_or_404(Meeting, pk=meeting_id)

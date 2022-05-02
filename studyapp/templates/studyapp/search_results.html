@@ -85,18 +85,28 @@ li a:hover:not(.active) {
         </tr>
     </thead>
     <tbody>
-        {% for course in object_list %}
+        {% for course, checkIfEnrolled in object_list %}
         <tr>
         <!-- <th scope="row">{{thought.id}}</th> -->
         <td>{{ course.department }}</td>
             <td>{{ course.course_number }}</td>
         <td>{{ course.course_name }}</td>
+
+        {% if checkIfEnrolled %}
+        <form action="{% url 'studyapp:drop' %}" method = "POST">
+        {% else %}
         <form action="{% url 'studyapp:enroll' %}" method = "POST">
+        {% endif %}
           {% csrf_token %}
           <input type="hidden" value="{{  course.id  }}" name="course_id">
           <input type="hidden" value="{{  request.get_full_path  }}" name="next">
         <td>
-          <input type="submit" class="btn btn-primary" role="button" value="Enroll"></td>
+            {% if checkIfEnrolled %}
+            <input type="submit" class="btn btn-danger" role="button" value="Drop"></td>
+            {% else %}
+          <input type="submit" class="btn btn-primary" role="button" value="Enroll">
+            {% endif %}
+        </td>
             </form>
         </tr>
         {% endfor %}
