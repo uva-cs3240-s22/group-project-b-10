@@ -34,8 +34,6 @@ class Profile(models.Model):
     name = models.CharField(max_length=200)
     email = models.CharField(max_length=200)
     friends = models.ManyToManyField("Profile")
-    enrolled_courses = models.CharField(max_length=200)  # Eventually should be array
-    selected_courses = models.CharField(max_length=200)  # Eventually should be array
     # a user's/profile's relationship to meetings is many to many.
     # A meeting might have many profiles
     # A profile might have many meetings
