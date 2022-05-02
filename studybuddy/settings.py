@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'datetimepicker',
+    'bootstrap_datepicker_plus',
+    'jquery'
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"

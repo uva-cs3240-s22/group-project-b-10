@@ -24,6 +24,8 @@ from django.conf import settings
 from django.http import FileResponse, HttpRequest, HttpResponse
 from django.views.decorators.cache import cache_control
 from django.views.decorators.http import require_GET
+from bootstrap_datepicker_plus.widgets import DateTimePickerInput
+from django.views import generic
 
 # Create your views here.
 
@@ -130,6 +132,22 @@ def MeetingView(request):
     all_meetings = Meeting.objects.order_by('post_date')
     context = {'all_meetings': all_meetings}
     return render(request, template_name, context)
+
+# class CreateView(generic.edit.CreateView):
+#     model = Meeting
+#     fields = fields = [
+#             'location',
+#             'course',
+#             'start_time',
+#             'end_time',
+#             'post_text',
+#             'buddies', 
+#         ]
+#     def get_form(self):
+#         form = super().get_form()
+#         form.fields['start_time'].widget = DateTimePickerInput()
+#         form.fields['end_time'].widget = DateTimePickerInput()
+#         return form
 
 def CreateMeeting(request):
     template_name = 'studyapp/create-meetings.html'

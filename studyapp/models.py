@@ -69,10 +69,10 @@ class Meeting(models.Model):
     buddies = models.ManyToManyField(Profile)
     # partners = models.ForeignKey(Profile, on_delete=models.CASCADE, default = None)
     # we want time
-    start_time = post_date = models.DateTimeField('Start time', default=None)
+    start_time = models.DateTimeField('Start time', default=None)
     end_time = models.DateTimeField('End time', default=None)
 
-    post_text = models.CharField(max_length=200)
+    post_text = models.CharField('Description', max_length=200)
     post_date = models.DateTimeField('date posted', default=timezone.now)
     def __str__(self):
         return self.post_text
