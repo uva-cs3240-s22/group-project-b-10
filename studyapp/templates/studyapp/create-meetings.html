@@ -70,7 +70,8 @@ li a:hover:not(.active) {
         {% csrf_token %}
         {{ form|crispy}}
         <a href="/browse-meetings/" class="btn btn-secondary btn-lg" role="button">Take me to browse meetings</a>
-        <a type="submit" class="btn btn-primary btn-lg btn-light" href="{% url 'studyapp:meeting-successful' %}" role="botton">Create</a>
+        <button type="submit" class="btn btn-primary btn-lg btn-light">Create</button>
+        <!-- href="{% url 'studyapp:meeting-successful' %}" -->
         <!-- <a href="{'polls:deepthoughts:list'}">Looking for the list of thoughts?</a> -->
     </form>
 </div>

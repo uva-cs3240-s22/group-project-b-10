@@ -142,13 +142,17 @@ def CreateMeeting(request):
         # meeting_id = request.POST['meeting_id']
         meeting_id = new_meeting.id
         meeting = Meeting.objects.get(id = meeting_id)
+         # this part appends the meeting to the user
+        myProfile.meetings.add(meeting)
+        
+        meeting = Meeting.objects.get(id = meeting_id)
 
         myProfile.meetings.add(meeting)
         myProfile.save()
 
         meeting.buddies.add(myProfile)
         meeting.save()
-        
+        return HttpResponseRedirect("/meeting-successful/")
     context = {
         'form': form 
         }
