@@ -23,5 +23,5 @@ urlpatterns = [
     path('join/', views.join_meeting, name="join"),
     path('leave/', views.leave_meeting, name="leave"),
     path('meeting-successful/', views.meeting_successful_view, name="meeting-successful"),
-    path('relevant-meetings/', views.relevant_meetings, name="relevant-meetings"),
+    path('relevant-meetings/', views.RelevantMeetingsView, name="relevant-meetings"),
 ]

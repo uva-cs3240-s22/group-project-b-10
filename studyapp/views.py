@@ -81,13 +81,18 @@ def get_data():
 
 
 
-def relevant_meetings(request):
+def RelevantMeetingsView(request):
     myProfile = Profile.objects.get(user = request.user)
     my_courses = myProfile.profile_courses.all()
+    print(my_courses)
+    all_meetings = Meeting.objects.all()
+    relevant_meetings = []
+    for meeting in all_meetings:
+        if meeting.course in my_courses:
+            relevant_meetings.append(meeting)
 
-    all_meetings = filter(lambda m: m in my_courses, Meeting.objects.all())
     template_name = 'studyapp/browse-meetings.html'
-    context = {'all_meetings': all_meetings}
+    context = {'all_meetings': relevant_meetings}
     return render(request, template_name, context)
     
 
