@@ -52,6 +52,7 @@ class Profile(models.Model):
 class Friend_Request(models.Model):
     from_user = models.ForeignKey(Profile, related_name='from_user', on_delete=models.CASCADE)
     to_user = models.ForeignKey(Profile, related_name='to_user', on_delete=models.CASCADE)
+    objects = models.Manager()
 
 
 class Room(models.Model):
