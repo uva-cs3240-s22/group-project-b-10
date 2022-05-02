@@ -17,8 +17,14 @@ class MeetingCreateForm(forms.ModelForm):
             'buddies' 
         ]
         widgets = {
-            'start_time': DateTimePickerInput(),
-            'end_time': DateTimePickerInput(), 
+            'start_time': DateTimePickerInput(options = {
+                "showClose": True,
+                "showClear": True,
+            }),
+            'end_time': DateTimePickerInput(options = {
+                "showClose": True,
+                "showClear": True,
+            }), 
         }
 # class EnrollForm(forms.ModelForm):
 #     class Meta:

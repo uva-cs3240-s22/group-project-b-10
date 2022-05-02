@@ -93,7 +93,7 @@ def RelevantMeetingsView(request):
         if meeting.course in my_courses:
             relevant_meetings.append(meeting)
 
-    template_name = 'studyapp/browse-meetings.html'
+    template_name = 'studyapp/relevant-meetings.html'
     context = {'all_meetings': relevant_meetings}
     return render(request, template_name, context)
     

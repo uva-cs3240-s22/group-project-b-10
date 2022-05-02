@@ -65,17 +65,17 @@ li a:hover:not(.active) {
 </body>
 
 
-<div class="p-3 mb-2 bg-dark text-white">
+<div class="p-3 mb-2 bg-white text-dark">
     <figure class="text-center">
         <h1>{{ 'Make a meeting!'  }}</h1>
     </figure>
 {% block content %}
     <form method='POST'>
         {% csrf_token %}
-        {{ form.media}}
         {{ form|crispy}}
+        {{ form.media }}
         <a href="/browse-meetings/" class="btn btn-secondary btn-lg" role="button">Take me to browse meetings</a>
-        <button type="submit" class="btn btn-primary btn-lg btn-light">Create</button>
+        <button type="submit" class="btn btn-primary btn-lg">Create</button>
         <!-- href="{% url 'studyapp:meeting-successful' %}" -->
         <!-- <a href="{'polls:deepthoughts:list'}">Looking for the list of thoughts?</a> -->
     </form>
