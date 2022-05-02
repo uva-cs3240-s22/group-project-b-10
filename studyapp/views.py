@@ -79,6 +79,19 @@ def get_data():
 	data = requests.get(url).json()
 	return data
 
+
+
+def relevant_meetings(request):
+    myProfile = Profile.objects.get(user = request.user)
+    my_courses = myProfile.profile_courses.all()
+
+    all_meetings = filter(lambda m: m in my_courses, Meeting.objects.all())
+    template_name = 'studyapp/browse-meetings.html'
+    context = {'all_meetings': all_meetings}
+    return render(request, template_name, context)
+    
+
+
 def CoursesView(request):
     model = Course
     template_name = 'studyapp/courses.html'

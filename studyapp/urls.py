@@ -21,6 +21,7 @@ urlpatterns = [
     path('enroll/', views.enroll_user_in_course, name = "enroll"),
     path('drop/', views.drop_course, name = "drop"),
     path('join/', views.join_meeting, name="join"),
-    path('leave', views.leave_meeting, name="leave"),
-    path('meeting-successful.html', views.meeting_successful_view, name="meeting-successful"),
+    path('leave/', views.leave_meeting, name="leave"),
+    path('meeting-successful/', views.meeting_successful_view, name="meeting-successful"),
+    path('relevant-meetings/', views.relevant_meetings, name="relevant-meetings"),
 ]
