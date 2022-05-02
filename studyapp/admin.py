@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Course, Reply, Meeting, Profile, Friend_Request
+from .models import Course, Reply, Meeting, Profile, Friend_Request, Room
 
 
 # Register your models here.
