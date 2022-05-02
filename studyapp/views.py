@@ -84,7 +84,7 @@ def get_data():
 def RelevantMeetingsView(request):
     myProfile = Profile.objects.get(user = request.user)
     my_courses = myProfile.profile_courses.all()
-    print(my_courses)
+    # print(my_courses)
     all_meetings = Meeting.objects.all()
     relevant_meetings = []
     for meeting in all_meetings:
