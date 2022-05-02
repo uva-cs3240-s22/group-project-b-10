@@ -204,6 +204,7 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
+
 # https://stackoverflow.com/questions/9736975/django-admin-doesnotexist-at-admin
 # We had changed this to 1 and then 2 and that was causing issues; 5 seems to be the right number
 SITE_ID=6

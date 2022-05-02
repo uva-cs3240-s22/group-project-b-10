@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
+from django.contrib.auth import get_user_model
 # I got this from a search tutorial 
 # https://learndjango.com/tutorials/django-search-tutorial
 from django.db.models import Q
@@ -17,7 +18,7 @@ from twilio.jwt.access_token.grants import ChatGrant
 
 from .models import Meeting, Reply, Course, Profile, Room
 from .forms import MeetingCreateForm
-from .models import Meeting, Reply, Course, Profile
+from .models import Meeting, Reply, Course, Profile, Friend_Request
 import requests
 
 from django.conf import settings
@@ -276,8 +277,39 @@ def token(request):
 
     return JsonResponse(response)
 
+
 @require_GET
 @cache_control(max_age=60 * 60 * 24, immutable=True, public=True)  # one day
 def favicon(request: HttpRequest) -> HttpResponse:
     file = (settings.BASE_DIR / "studyapp" / "static" / "favicon.png").open("rb")
     return FileResponse(file)
+
+def send_friend_request(request, userID):
+    from_user = Profile.objects.get(user=request.user)
+    to_user = Profile.objects.get(id=userID)
+    friend_request, created = Friend_Request.objects.get_or_create(from_user=from_user, to_user=to_user)
+    if created:
+        return HttpResponse('Friend request sent!')
+    else:
+        return HttpResponse('Friend request already pending')
+
+def accept_friend_request(request, requestID):
+    friend_request = Friend_Request.objects.get(id=requestID)
+    if friend_request.to_user == request.user:
+        friend_request.to_user.friends.add(friend_request.from_user)
+        friend_request.from_user.friends.add(friend_request.to_user)
+        friend_request.delete()
+        return HttpResponse('Friend request accepted!')
+    else:
+        return HttpResponse('Friend request denied')
+
+def FriendView(request):
+    model = Friend_Request
+    template_name = 'studyapp/send-friend-request.html'
+    User = get_user_model()
+    users = User.objects.all()
+    context = {
+        'users': users
+    }
+    return render(request, template_name, context)
+
