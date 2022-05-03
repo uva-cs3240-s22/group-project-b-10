@@ -98,7 +98,7 @@ body {
   <p>Username: {{user.username}}</p>
   <p>Buddies:
     {% for friend in profile.friends.all %}
-      <p><a href="/profile/{{user.id}}/">{{friend.name}}</a></p>
+      <p><a href="/profile/{{friend.id}}/">{{friend.name}}</a></p>
     {% endfor %}
   </p>
 
