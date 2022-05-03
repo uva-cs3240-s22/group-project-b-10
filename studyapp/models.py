@@ -19,8 +19,10 @@ class Course(models.Model):
     #     boolean=True,
     #     ordering='course_name'
     # )
+
+
     def __str__(self):
-        return self.course_name
+        return f'{self.course_title}: {self.course_name}'
 
 class Reply(models.Model):
     post = models.ForeignKey('Meeting', on_delete=models.CASCADE)
@@ -44,13 +46,16 @@ class Profile(models.Model):
 
 
     def __str__(self):
-        return f'{self.user.username} Profile'
+        return f'{self.user.username}'
 
+# https://stackoverflow.com/questions/29830928/django-db-utils-programmingerror-relation-already-exists
 class Enrollment(models.Model):
     student=models.ForeignKey(Profile, on_delete=models.CASCADE)
     enrolled_course=models.ForeignKey(Course, on_delete=models.CASCADE)
     isToggled=models.BooleanField(default=True)
     objects = models.Manager()
+    def __str__(self):
+        return f'{self.student} Enrollment for {self.enrolled_course}'
 
 # https://www.twilio.com/blog/2018/05/build-chat-python-django-applications-programmable-chat.html
 

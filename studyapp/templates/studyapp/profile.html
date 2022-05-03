@@ -99,17 +99,19 @@ li a:hover:not(.active) {
       <p><a href="/profile/{{user.id}}/">{{friend.name}}</a></p>
     {% endfor %}
   </p>
-    <p>Courses:
+
+       <p>Enrolled Courses:
       <table class="table table-striped table-light">
         <thead>
             <tr>
             <!-- <th scope="col">#</th> -->
             <th scope="col">Course</th>
             <th scope="col">Drop?</th>
+            <th scope="col">Looking for study buddies?</th>
             </tr>
         </thead>
         <tbody>
-          {% for course in profile.profile_courses.all %}
+          {% for course, isToggled in enrollments %}
             <tr>
             <!-- <th scope="row">{{thought.id}}</th> -->
             <td>{{course.department}}{{course.course_number}}: {{course.course_name}}</td>
@@ -120,11 +122,26 @@ li a:hover:not(.active) {
             <td>
               <input type="submit" class="btn btn-danger" role="button" value="Drop"></td>
                 </form>
+          <td> <div class="form-check">
+          {% if isToggled %}
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+                {#<label class="form-check-label" for="flexSwitchCheckChecked"></label> </div>#}
+            {% else %}
+          <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" >
+                {#<label class="form-check-label" for="flexSwitchCheckChecked"></label> </div>#}
+          {% endif %}
+</div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                     </td>
             </tr>
             {% endfor %}
         </tbody>
-      </table> 
+      </table>
       </p>
+
+
+
       <!-- this is devoted to making a meetings table -->
       <p>Meetings:
         <table class="table table-striped table-light">
