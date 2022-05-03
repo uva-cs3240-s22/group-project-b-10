@@ -50,10 +50,10 @@ $(function() {
       // Alert the user they have been assigned a random username
 //      username = data.identity;       // removed this to make name
         username = data.username;
-      console.log("this is the token");
-      console.log(data.token);
+      console.log("this is the token");     // can comment out
+      console.log(data.token);              // can comment out
       print(
-        "You have been assigned a random username of: " +
+        "You have been assigned username: " +
           '<span class="me">' +
           username +
           "</span>",
