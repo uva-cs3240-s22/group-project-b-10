@@ -32,5 +32,8 @@ urlpatterns = [
     path('send_friend_request/<int:userID>/', views.send_friend_request, name='send-friend-request'),
     path('accept_friend_request/<int:requestID>/', views.accept_friend_request, name='accept-friend-request'),
     path('browse-users/', views.FriendView, name="browse-users"),
-    path('friend-requests/', views.RequestView, name="friend-requests")
+    path('request-successful/', views.friend_request_sent, name="request-successful"),
+    path('request-pending/', views.friend_request_pending, name="request-pending"),
+    path('friend-requests/', views.RequestView, name="friend-requests"),
+    path('request-accepted/', views.friend_request_accepted, name="request-accepted")
 ]

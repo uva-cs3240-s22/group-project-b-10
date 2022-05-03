@@ -414,26 +414,36 @@ def send_friend_request(request, userID):
     to_user = Profile.objects.get(id=userID)
     friend_request, created = Friend_Request.objects.get_or_create(from_user=from_user, to_user=to_user)
     if created:
-        return HttpResponse('Friend request sent!')
+        return HttpResponseRedirect("/request-successful/")
     else:
-        return HttpResponse('Friend request already pending')
+        return HttpResponseRedirect('/request-pending/')
 
 def accept_friend_request(request, requestID):
     friend_request = Friend_Request.objects.get(id=requestID)
     friend_request.to_user.friends.add(friend_request.from_user)
     friend_request.from_user.friends.add(friend_request.to_user)
     friend_request.delete()
-    return HttpResponse('Friend request accepted!')
+    return HttpResponseRedirect('/request-accepted/')
 
 def FriendView(request):
     model = Friend_Request
     template_name = 'studyapp/send-friend-request.html'
     User = get_user_model()
     users = User.objects.all()
+    current_user = request.user
     context = {
-        'users': users
+        'users': users,
+        'current_user' : current_user
     }
     return render(request, template_name, context)
+
+def friend_request_sent(request):
+    template_name = 'studyapp/request-sent.html'
+    return render(request, template_name)
+
+def friend_request_pending(request):
+    template_name = 'studyapp/request-pending.html'
+    return render(request, template_name)
 
 def RequestView(request):
     model = Friend_Request
@@ -443,4 +453,8 @@ def RequestView(request):
         'all_friend_requests' : all_friend_requests
     }
     return render(request, template_name, context)
+
+def friend_request_accepted(request):
+    template_name = 'studyapp/request-accepted.html'
+    return render(request, template_name)
 

@@ -73,6 +73,7 @@
 <h1>Connect with Friends</h1>
 <div class="all_users">
     {% for user in users %}
+    {% if
     <h2>{{user.username}} -- {{user.email}}</h2>
         <a href="/send_friend_request/{{user.id}}/">send friend request</a>
     {% endfor %}
