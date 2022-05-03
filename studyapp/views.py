@@ -301,6 +301,7 @@ def accept_friend_request(request, requestID):
         friend_request.delete()
         return HttpResponse('Friend request accepted!')
     else:
+        friend_request.delete()
         return HttpResponse('Friend request denied')
 
 def FriendView(request):
@@ -310,6 +311,15 @@ def FriendView(request):
     users = User.objects.all()
     context = {
         'users': users
+    }
+    return render(request, template_name, context)
+
+def RequestView(request):
+    model = Friend_Request
+    template_name = 'studyapp/accept-friend-request.html'
+    all_friend_requests = Friend_Request.objects.all()
+    context = {
+        'all_friend_requests' : all_friend_requests
     }
     return render(request, template_name, context)
 
