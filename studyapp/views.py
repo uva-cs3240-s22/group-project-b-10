@@ -136,7 +136,8 @@ def OtherProfileView(request, userID):
     model = Profile
     template_name = 'studyapp/user-profile.html'
     userProfile = Profile.objects.get(id=userID)
-    context = {'profile' : userProfile}
+    enrollments = [(my_class.enrolled_course, my_class.isToggled) for my_class in Enrollment.objects.filter(student=userProfile).all()]
+    context = {'profile' : userProfile, 'enrollments': enrollments}
     return render(request, template_name, context)
 
 # https://www.fullstackpython.com/blog/maps-django-web-applications-projects-mapbox.html
