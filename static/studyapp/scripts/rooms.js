@@ -48,7 +48,7 @@ $(function() {
     },
     function(data) {
       // Alert the user they have been assigned a random username
-      username = data.identity;
+      username = data.username;
 //      console.log("this is printed");
       print(
         "You have been assigned a random username of: " +

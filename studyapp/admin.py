@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from .models import Course, Reply, Meeting, Profile, Friend_Request, Room
+from .models import Enrollment
 
 
 # Register your models here.
@@ -31,4 +32,6 @@ admin.site.register(Room)
 admin.site.register(Course)
 
 admin.site.register(Friend_Request)
+
+admin.site.register(Enrollment)
 
