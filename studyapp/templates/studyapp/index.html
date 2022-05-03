@@ -205,15 +205,9 @@
                                 <div class="form-group form-primary"> <input type="password" class="form-control" name="password" placeholder="Password" value="" id="password"> </div>
                                 <div class="form-group form-primary"> <input type="password" class="form-control" name="password_confirm" placeholder="Repeat password" value="" id="password_confirm"> </div>
                                 <div class="row">
-                                    <div class="col-md-12"> <input type="submit" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20" name="submit" value="Signup Now"> <!-- <button type="button" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20"><i class="fa fa-lock"></i> Signup Now </button> -->
+                                    <a href="{% provider_login_url 'google' %}" class="btn btn-secondary btn-lg" role="button">Sign Up/Sign In!</a> <!-- <button type="button" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20"><i class="fa fa-lock"></i> Signup Now </button> -->
                                     </div>
                                 </div>
-                                <div class="or-container">
-                                    <div class="line-separator"></div>
-                                    <div class="or-label">or</div>
-                                    <div class="line-separator"></div>
-                                <p class="text-inverse text-center">Sign up using your Google Account: <a href="{% provider_login_url 'google' %}">Google Login</a></p>
-                            </div>
                         </div>
                      </div>
                     </form>
