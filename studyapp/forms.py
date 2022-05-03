@@ -1,5 +1,6 @@
 from django import forms
 from .models import Meeting, Profile
+from bootstrap_datepicker_plus.widgets import DateTimePickerInput
 
 class MeetingCreateForm(forms.ModelForm):
     class Meta:
@@ -15,7 +16,16 @@ class MeetingCreateForm(forms.ModelForm):
             'post_text',
             'buddies' 
         ]
-
+        widgets = {
+            'start_time': DateTimePickerInput(options = {
+                "showClose": True,
+                "showClear": True,
+            }),
+            'end_time': DateTimePickerInput(options = {
+                "showClose": True,
+                "showClear": True,
+            }), 
+        }
 # class EnrollForm(forms.ModelForm):
 #     class Meta:
 #         model = Profile

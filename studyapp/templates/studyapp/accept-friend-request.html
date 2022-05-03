@@ -1,0 +1,15 @@
+{# Load the tag library #}
+{% load bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+{% for friend_request in all_friend_requests %}
+<h1>{{friend_request.from_user}}
+    <a href="/accept_friend_request/{{friend_request.id}}/">accept friend request</a>
+</h1>
+{% endfor %}

@@ -1,7 +1,5 @@
 // chat/static/chat/scripts/rooms.js
 
-
-
 $(function() {
   // Reference to the chat messages area
   let $chatWindow = $("#messages");
@@ -48,7 +46,8 @@ $(function() {
     },
     function(data) {
       // Alert the user they have been assigned a random username
-      username = data.identity;
+//      username = data.identity;       // removed this to make name
+        username = data.username;
 //      console.log("this is printed");
       print(
         "You have been assigned a random username of: " +
