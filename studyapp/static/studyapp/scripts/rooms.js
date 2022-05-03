@@ -1,5 +1,7 @@
 // chat/static/chat/scripts/rooms.js
 
+console.log("this is printed");
+
 $(function() {
   // Reference to the chat messages area
   let $chatWindow = $("#messages");
