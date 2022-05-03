@@ -14,49 +14,54 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>Chat Room</title>
 <style>
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #333;
-}
+        ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          background-color: cornflowerblue;
+        }
 
-li {
-  float: left;
-  border-right:1px solid #bbb;
-}
+        li {
+          float: left;
+          border-right:1px solid #bbb;
+        }
 
-li:last-child {
-  border-right: none;
-}
+        li:last-child {
+          border-right: none;
+        }
 
-li a {
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
+        li a {
+          display: block;
+          color: white;
+          text-align: center;
+          padding: 14px 16px;
+          text-decoration: none;
+        }
 
-li a:hover:not(.active) {
-  background-color: #111;
-}
+        li a:hover:not(.active) {
+          background-color: white;
+        }
 
-.active {
-  background-color: #04AA6D;
-}
+        .active {
+          background-color: gray;
+        }
 </style>
 </head>
 <body>
 
 <ul>
     <li><a class="active" href="{% url 'studyapp:all_rooms' %}">Home</a></li>
-    <li><a href="{% url 'studyapp:browse-meetings' %}">Browse Meetings</a></li>
+    <li><a href="{% url 'studyapp:browse-meetings' %}">All Meetings</a></li>
+    <li><a href="{% url 'studyapp:relevant-meetings' %}">Relevant Meetings</a></li>
     <li><a href="{% url 'studyapp:create-meetings' %}">Create Meetings</a></li>
     <li><a href="{% url 'studyapp:courses' %}">Courses</a></li>
     <li><a href="{% url 'studyapp:map' %}">Map</a></li>
+    <li><a href="{% url 'studyapp:browse-users' %}">Connect with Friends</a></li>
+    <li><a href="{% url 'studyapp:friend-requests' %}">Friend Requests</a></li>
+    <li style="float:right"><a href="{% url 'logout' %}">Logout</a></li>
     <li style="float:right"><a href="{% url 'studyapp:profile' %}">Profile</a></li>
     {# <li style="float:right"><a href="{% url 'logout' %}">Logout</a></li> #}
 </ul>
