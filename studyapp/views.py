@@ -129,7 +129,6 @@ def ProfileView(request):
             toggled_courses.append((my_class.enrolled_course, 1))
         else:
             toggled_courses.append((my_class.enrolled_course, 0))
-    print(toggled_courses)
     context = {'profile': myProfile, 'enrollments':toggled_courses}
     return render(request, template_name, context)
 
@@ -259,6 +258,9 @@ def drop_course(request):
     return redirect(next_url)
 
 def untoggle_course(request):
+    post_object = request.POST.dict()
+    # print(post_object)
+    # print(request.POST['toggle_value'])
     if request.method != 'POST':
         return  HttpResponse('Method Not Allowed', status=405)
     # where we take them back to
@@ -272,9 +274,11 @@ def untoggle_course(request):
     course_id = request.POST['course_id']
     course = Course.objects.get(id = course_id)
     enrolled_course = myEnrollments.get(enrolled_course=course)
-    currValue = enrolled_course.isToggled
-    enrolled_course.isToggled = (not currValue)
-
+    if 'toggle_value' in post_object:
+        enrolled_course.isToggled = True
+    else:
+        enrolled_course.isToggled = False
+    enrolled_course.save()
     return redirect(next_url)
 
 def join_meeting(request):
