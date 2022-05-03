@@ -22,7 +22,7 @@
           margin: 0;
           padding: 0;
           overflow: hidden;
-          background-color: #333;
+          background-color: blue;
         }
 
         li {
@@ -43,7 +43,7 @@
         }
 
         li a:hover:not(.active) {
-          background-color: #111;
+          background-color: white;
         }
 
         .active {
@@ -58,6 +58,7 @@
             <li><a href="{% url 'studyapp:create-meetings' %}">Create Meetings</a></li>
             <li><a href="{% url 'studyapp:courses' %}">Courses</a></li>
             <li><a href="{% url 'studyapp:map' %}">Map</a></li>
+            <li><a href="{% url 'studyapp:browse-users' %}">Connect with Friends</a></li>
             <li style="float:right"><a href="{% url 'logout' %}">Logout</a></li>
             <li style="float:right"><a href="{% url 'studyapp:profile' %}">Profile</a></li>
         </ul>
@@ -115,9 +116,66 @@
     </div>
   </section>
 
-{% else %}
+    https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1dK86x4Pi3eX0atkR_lQVWLvlWTKXil24Jw&usqp=CAU
 
-    <h1>StudyBuddy Login </h1>
+    <footer class="mt-auto bg-light text-center text-lg-start" id="footer">
+  <!-- Copyright -->
+  <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+    © StudyBuddy 2022
+  </div>
+  <!-- Copyright -->
+</footer>
+
+{% else %}
+    <style>
+        ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          background-color: white;
+        }
+
+        li {
+          float: left;
+          border-right:1px solid #bbb;
+        }
+
+        li:last-child {
+          border-right: none;
+        }
+
+        li a {
+          display: block;
+          color: white;
+          text-align: center;
+          padding: 14px 16px;
+          text-decoration: none;
+        }
+
+        li a:hover:not(.active) {
+          background-color: white;
+        }
+
+        .active {
+          background-color: #04AA6D;
+        }
+        .header {
+  padding: 20px;
+  text-align: center;
+  background: url('https://cdn.britannica.com/92/216092-050-4B31C2B7/custom-library.jpg?q=60');
+  color: white;
+  font-size: 50px;
+}
+        </style>
+        </head>
+        <ul>
+
+      <div class="container">
+        <h1 class="header">
+          Welcome to Study Buddy!
+        </h1>
+    </div>
     <section class="login-block">
         <div class="container-fluid">
             <div class="row">
@@ -126,9 +184,6 @@
                         <div class="auth-box card">
                             <div class="card-block">
                                 <div class="row">
-                                    <div class="col-md-12">
-                                        <h3 class="text-center heading">Create your StudyBuddy Account Here!</h3>
-                                    </div>
                                 </div>
                                 <div class="form-group form-primary"> <input type="text" class="form-control" name="first_name" value="" placeholder="Display name" id="first_name"> </div>
                                 <div class="form-group form-primary"> <input type="text" class="form-control" name="email" value="" placeholder="Email" id="email"> </div>
@@ -154,12 +209,4 @@
 {% endif %}
 </body>
 </html>
-
-<footer class="mt-auto bg-light text-center text-lg-start" id="footer">
-  <!-- Copyright -->
-  <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-    © StudyBuddy 2022
-  </div>
-  <!-- Copyright -->
-</footer>
 

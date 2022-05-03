@@ -19,7 +19,7 @@ ul {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #333;
+  background-color: blue;
 }
 
 ul.list-unstyled {
@@ -44,7 +44,7 @@ li a {
 }
 
 li a:hover:not(.active) {
-  background-color: #111;
+  background-color: white;
 }
 
 .active {
@@ -66,6 +66,7 @@ li a:hover:not(.active) {
     <li><a class="active" href="{% url 'studyapp:create-meetings' %}">Create Meetings</a></li>
     <li><a href="{% url 'studyapp:courses' %}">Courses</a></li>
     <li><a href="{% url 'studyapp:map' %}">Map</a></li>
+    <li><a href="{% url 'studyapp:browse-users' %}">Connect with Friends</a></li>
     <li style="float:right"><a href="{% url 'studyapp:profile' %}">Profile</a></li>
     {# <li style="float:right"><a href="{% url 'logout' %}">Logout</a></li> #}
 </ul>
