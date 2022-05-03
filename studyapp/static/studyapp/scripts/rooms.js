@@ -48,8 +48,8 @@ $(function() {
     },
     function(data) {
       // Alert the user they have been assigned a random username
-//      username = data.identity;       // removed this to make name
-        username = data.username;
+      username = data.identity;       // removed this to make name
+//        username = data.username;
       console.log("this is the token");     // can comment out
       console.log(data.token);              // can comment out
       print(
@@ -73,7 +73,7 @@ $(function() {
   // Extract the room's channel name from the page URL
   let channelName = window.location.pathname.split("/").slice(-2, -1)[0];
 
-  print(`Attempting to join the "${channelName}" chat channel...`);
+  print(`Joined the "${channelName}" chat channel...`);
 
   chatClient
     .getChannelByUniqueName(channelName)
@@ -96,11 +96,11 @@ $(function() {
  }
  function setupChannel(name) {
   roomChannel.join().then(function(channel) {
-    print(
-      `Joined channel ${name} as <span class="me"> ${username} </span>.`,
-      true
-    );
-    channel.getMessages(30).then(processPage);
+//    print(
+//      `Joined channel ${name} as <span class="me"> ${username} </span>.`,
+//      true
+//    );
+//    channel.getMessages(30).then(processPage);
   });
 
   // Listen for new messages sent to the channel
