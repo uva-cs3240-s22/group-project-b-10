@@ -94,6 +94,13 @@ def ProfileView(request):
     context = {'profile': myProfile}
     return render(request, template_name, context)
 
+def OtherProfileView(request, userID):
+    model = Profile
+    template_name = 'studyapp/user-profile.html'
+    userProfile = Profile.objects.get(id=userID)
+    context = {'profile' : userProfile}
+    return render(request, template_name, context)
+
 # https://www.fullstackpython.com/blog/maps-django-web-applications-projects-mapbox.html
 def MapView(request):
     template_name = 'studyapp/map.html'
