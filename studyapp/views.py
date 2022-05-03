@@ -18,7 +18,7 @@ from twilio.jwt.access_token.grants import ChatGrant
 
 from .models import Meeting, Reply, Course, Profile, Room
 from .forms import MeetingCreateForm
-from .models import Meeting, Reply, Course, Profile, Friend_Request
+from .models import Meeting, Reply, Course, Profile, Friend_Request , Enrollment
 import requests
 
 from django.conf import settings
@@ -94,7 +94,8 @@ def get_data():
 def RelevantMeetingsView(request):
     myProfile = Profile.objects.get(user = request.user)
     my_courses = myProfile.profile_courses.all()
-    # print(my_courses)
+    my_courses = [my_class.enrolled_course for my_class in Enrollment.objects.filter(student= myProfile).all() if my_class.isToggled]
+    print(my_courses)
     all_meetings = Meeting.objects.all()
     relevant_meetings = []
     for meeting in all_meetings:
@@ -121,14 +122,22 @@ def ProfileView(request):
     model = Profile
     template_name = 'studyapp/profile.html'
     myProfile = Profile.objects.get(user = request.user)
-    context = {'profile': myProfile}
+    enrollments = Enrollment.objects.filter(student= myProfile).all()
+    toggled_courses = []
+    for my_class in enrollments:
+        if my_class.isToggled:
+            toggled_courses.append((my_class.enrolled_course, 1))
+        else:
+            toggled_courses.append((my_class.enrolled_course, 0))
+    context = {'profile': myProfile, 'enrollments':toggled_courses}
     return render(request, template_name, context)
 
 def OtherProfileView(request, userID):
     model = Profile
     template_name = 'studyapp/user-profile.html'
     userProfile = Profile.objects.get(id=userID)
-    context = {'profile' : userProfile}
+    enrollments = [(my_class.enrolled_course, my_class.isToggled) for my_class in Enrollment.objects.filter(student=userProfile).all()]
+    context = {'profile' : userProfile, 'enrollments': enrollments}
     return render(request, template_name, context)
 
 # https://www.fullstackpython.com/blog/maps-django-web-applications-projects-mapbox.html
@@ -222,8 +231,10 @@ def enroll_user_in_course(request):
     myProfile = Profile.objects.get(user = request.user)
     course_id = request.POST['course_id']
     course = Course.objects.get(id = course_id)
+    enrollment_class = Enrollment.objects.create(student=myProfile, enrolled_course=course)
     myProfile.profile_courses.add(course)
     myProfile.save()
+
 
     return redirect(next_url)
 
@@ -237,10 +248,38 @@ def drop_course(request):
     # Now assuming user is authenticated correctly
     # get the current user 
     myProfile = Profile.objects.get(user = request.user)
+    myEnrollments = Enrollment.objects.filter(student = myProfile)
     course_id = request.POST['course_id']
     course = Course.objects.get(id = course_id)
+    enrolled_course = myEnrollments.get(enrolled_course=course)
+    enrolled_course.delete()
+
     myProfile.profile_courses.remove(course)
     myProfile.save()
+    return redirect(next_url)
+
+def untoggle_course(request):
+    post_object = request.POST.dict()
+    # print(post_object)
+    # print(request.POST['toggle_value'])
+    if request.method != 'POST':
+        return  HttpResponse('Method Not Allowed', status=405)
+    # where we take them back to
+    next_url = request.POST['next']
+    if not request.user.is_authenticated:
+        return HttpResponse('Unauthorized', status=401)
+    # Now assuming user is authenticated correctly
+    # get the current user
+    myProfile = Profile.objects.get(user = request.user)
+    myEnrollments = Enrollment.objects.filter(student = myProfile)
+    course_id = request.POST['course_id']
+    course = Course.objects.get(id = course_id)
+    enrolled_course = myEnrollments.get(enrolled_course=course)
+    if 'toggle_value' in post_object:
+        enrolled_course.isToggled = True
+    else:
+        enrolled_course.isToggled = False
+    enrolled_course.save()
     return redirect(next_url)
 
 def join_meeting(request):
@@ -332,9 +371,8 @@ def room_detail(request, slug):
 fake = Faker()
 
 def token(request):
-    # identity = request.GET.get('identity', Profile.objects.get(user = request.user).name)
-    # print("name", Profile.objects.get(user = request.user).name, "type", type(er).Profile.objects.get(user = request.usname))
-    identity = request.GET.get('identity', fake.user_name())
+    identity = request.GET.get('identity', Profile.objects.get(user = request.user).name)
+    # identity = request.GET.get('identity', fake.user_name())
     device_id = request.GET.get('device', 'default')  # unique device ID
     # print(device_id)
     # print("token views")
@@ -345,8 +383,7 @@ def token(request):
     chat_service_sid = settings.TWILIO_CHAT_SERVICE_SID
 
     token = AccessToken(account_sid, api_key, api_secret, identity=identity)
-    
-    # print(token)
+
     # Create a unique endpoint ID for the device
     endpoint = "MyDjangoChatRoom:{0}:{1}".format(identity, device_id)
 
@@ -354,6 +391,8 @@ def token(request):
         chat_grant = ChatGrant(endpoint_id=endpoint,
                                service_sid=chat_service_sid)
         token.add_grant(chat_grant)
+
+    print("token: ", token)
 
     response = {
         'identity': identity,
@@ -375,26 +414,36 @@ def send_friend_request(request, userID):
     to_user = Profile.objects.get(id=userID)
     friend_request, created = Friend_Request.objects.get_or_create(from_user=from_user, to_user=to_user)
     if created:
-        return HttpResponse('Friend request sent!')
+        return HttpResponseRedirect("/request-successful/")
     else:
-        return HttpResponse('Friend request already pending')
+        return HttpResponseRedirect('/request-pending/')
 
 def accept_friend_request(request, requestID):
     friend_request = Friend_Request.objects.get(id=requestID)
     friend_request.to_user.friends.add(friend_request.from_user)
     friend_request.from_user.friends.add(friend_request.to_user)
     friend_request.delete()
-    return HttpResponse('Friend request accepted!')
+    return HttpResponseRedirect('/request-accepted/')
 
 def FriendView(request):
     model = Friend_Request
     template_name = 'studyapp/send-friend-request.html'
     User = get_user_model()
     users = User.objects.all()
+    current_user = request.user
     context = {
-        'users': users
+        'users': users,
+        'current_user' : current_user
     }
     return render(request, template_name, context)
+
+def friend_request_sent(request):
+    template_name = 'studyapp/request-sent.html'
+    return render(request, template_name)
+
+def friend_request_pending(request):
+    template_name = 'studyapp/request-pending.html'
+    return render(request, template_name)
 
 def RequestView(request):
     model = Friend_Request
@@ -404,4 +453,8 @@ def RequestView(request):
         'all_friend_requests' : all_friend_requests
     }
     return render(request, template_name, context)
+
+def friend_request_accepted(request):
+    template_name = 'studyapp/request-accepted.html'
+    return render(request, template_name)
 

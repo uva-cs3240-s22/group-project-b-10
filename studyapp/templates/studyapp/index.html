@@ -22,7 +22,7 @@
           margin: 0;
           padding: 0;
           overflow: hidden;
-          background-color: blue;
+          background-color: cornflowerblue;
         }
 
         li {
@@ -47,18 +47,25 @@
         }
 
         .active {
-          background-color: #04AA6D;
+          background-color: gray;
         }
+                h1 {
+    color: yellow;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
         </style>
         </head>
+        <title>Home Page</title>
         <ul>
 
             <li><a class="active" href="{% url 'studyapp:all_rooms' %}">Home</a></li>
-            <li><a href="{% url 'studyapp:browse-meetings' %}">Browse Meetings</a></li>
+            <li><a href="{% url 'studyapp:browse-meetings' %}">All Meetings</a></li>
+            <li><a href="{% url 'studyapp:relevant-meetings' %}">Relevant Meetings</a></li>
             <li><a href="{% url 'studyapp:create-meetings' %}">Create Meetings</a></li>
             <li><a href="{% url 'studyapp:courses' %}">Courses</a></li>
             <li><a href="{% url 'studyapp:map' %}">Map</a></li>
             <li><a href="{% url 'studyapp:browse-users' %}">Connect with Friends</a></li>
+            <li><a href="{% url 'studyapp:friend-requests' %}">Friend Requests</a></li>
             <li style="float:right"><a href="{% url 'logout' %}">Logout</a></li>
             <li style="float:right"><a href="{% url 'studyapp:profile' %}">Profile</a></li>
         </ul>
@@ -80,11 +87,9 @@
 
 <body class="d-flex flex-column min-vh-100">
 {% if user.is_authenticated %}
-
-  <section class="hero is-info">
     <div class="hero-body has-text-centered">
       <div class="container">
-        <h1 class="title is-2">
+        <h1 class="title is-2" style="color: cornflowerblue">
           Welcome to Study Buddy!
         </h1>
         <h2 class="subtitle is-5">
@@ -93,7 +98,6 @@
         </h2>
       </div>
     </div>
-  </section>
   <section class="section">
     <div class="container">
       <div class="columns">
@@ -116,7 +120,7 @@
     </div>
   </section>
 
-    https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1dK86x4Pi3eX0atkR_lQVWLvlWTKXil24Jw&usqp=CAU
+    <img src="https://libraryhub.nejm.org/wp-content/uploads/2017/03/benefits-site-license-507845190.jpg">
 
     <footer class="mt-auto bg-light text-center text-lg-start" id="footer">
   <!-- Copyright -->
@@ -167,13 +171,24 @@
   color: white;
   font-size: 50px;
 }
+        h1 {
+    color: yellow;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+        footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 2.5rem;            /* Footer height */
+}
         </style>
         </head>
         <ul>
 
+
       <div class="container">
         <h1 class="header">
-          Welcome to Study Buddy!
+            <b>Welcome to Study Buddy!</b>
         </h1>
     </div>
     <section class="login-block">
@@ -190,15 +205,9 @@
                                 <div class="form-group form-primary"> <input type="password" class="form-control" name="password" placeholder="Password" value="" id="password"> </div>
                                 <div class="form-group form-primary"> <input type="password" class="form-control" name="password_confirm" placeholder="Repeat password" value="" id="password_confirm"> </div>
                                 <div class="row">
-                                    <div class="col-md-12"> <input type="submit" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20" name="submit" value="Signup Now"> <!-- <button type="button" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20"><i class="fa fa-lock"></i> Signup Now </button> -->
+                                    <a href="{% provider_login_url 'google' %}" class="btn btn-secondary btn-lg" role="button">Sign Up/Sign In!</a> <!-- <button type="button" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20"><i class="fa fa-lock"></i> Signup Now </button> -->
                                     </div>
                                 </div>
-                                <div class="or-container">
-                                    <div class="line-separator"></div>
-                                    <div class="or-label">or</div>
-                                    <div class="line-separator"></div>
-                                <p class="text-inverse text-center">Sign up using your Google Account: <a href="{% provider_login_url 'google' %}">Google Login</a></p>
-                            </div>
                         </div>
                      </div>
                     </form>
@@ -206,6 +215,13 @@
             </div>
         </div>
     </section>
+        <footer class="mt-auto bg-light text-center text-lg-start" id="footer">
+  <!-- Copyright -->
+  <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+    © StudyBuddy 2022
+  </div>
+  <!-- Copyright -->
+</footer>
 {% endif %}
 </body>
 </html>
