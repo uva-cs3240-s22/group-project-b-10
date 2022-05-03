@@ -7,9 +7,67 @@
 
 {# Display django.contrib.messages as Bootstrap alerts #}
 {% bootstrap_messages %}
+<head>
+    <title>Friend Requests</title>
+<style>
+        ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          background-color: cornflowerblue;
+        }
 
+        li {
+          float: left;
+          border-right:1px solid #bbb;
+        }
+
+        li:last-child {
+          border-right: none;
+        }
+
+        li a {
+          display: block;
+          color: white;
+          text-align: center;
+          padding: 14px 16px;
+          text-decoration: none;
+        }
+
+        li a:hover:not(.active) {
+          background-color: white;
+        }
+
+        .active {
+          background-color: gray;
+        }
+                 h1 {
+    color: cornflowerblue;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+                 .content {
+    padding:20px;
+    text-align: center;
+}
+</style>
+        <ul>
+
+            <li><a href="{% url 'studyapp:all_rooms' %}">Home</a></li>
+            <li><a href="{% url 'studyapp:browse-meetings' %}">All Meetings</a></li>
+            <li><a href="{% url 'studyapp:relevant-meetings' %}">Relevant Meetings</a></li>
+            <li><a href="{% url 'studyapp:create-meetings' %}">Create Meetings</a></li>
+            <li><a href="{% url 'studyapp:courses' %}">Courses</a></li>
+            <li><a href="{% url 'studyapp:map' %}">Map</a></li>
+            <li><a href="{% url 'studyapp:browse-users' %}">Connect with Friends</a></li>
+            <li><a class="active" href="{% url 'studyapp:friend-requests' %}">Friend Requests</a></li>
+            <li style="float:right"><a href="{% url 'logout' %}">Logout</a></li>
+            <li style="float:right"><a href="{% url 'studyapp:profile' %}">Profile</a></li>
+        </ul>
+
+<div class="content">
+<h1>View Friend Requests</h1>
 {% for friend_request in all_friend_requests %}
-<h1>{{friend_request.from_user}}
+<h2>{{friend_request.from_user}}</h2>
     <a href="/accept_friend_request/{{friend_request.id}}/">accept friend request</a>
-</h1>
 {% endfor %}
