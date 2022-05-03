@@ -250,7 +250,9 @@ def room_detail(request, slug):
 fake = Faker()
 
 def token(request):
-    identity = request.GET.get('identity', Profile.objects.get(user = request.user).name)
+    # identity = request.GET.get('identity', Profile.objects.get(user = request.user).name)
+    # print("name", Profile.objects.get(user = request.user).name, "type", type(er).Profile.objects.get(user = request.usname))
+    identity = request.GET.get('identity', fake.user_name())
     device_id = request.GET.get('device', 'default')  # unique device ID
 
     # print("token views")
@@ -272,6 +274,7 @@ def token(request):
 
     response = {
         'identity': identity,
+        'username': Profile.objects.get(user = request.user).name,
         'token': token.to_jwt()
     }
 
