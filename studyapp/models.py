@@ -35,19 +35,18 @@ class Profile(models.Model):
     objects = models.Manager()
     name = models.CharField(max_length=200)
     email = models.CharField(max_length=200)
-    friends = models.CharField(max_length=200)  # Eventually should be array
-    enrolled_courses = models.CharField(max_length=200)  # Eventually should be array
-    selected_courses = models.CharField(max_length=200)  # Eventually should be array
     # a user's/profile's relationship to meetings is many to many.
     # A meeting might have many profiles
     # A profile might have many meetings
     meetings = models.ManyToManyField('Meeting')
+    profile_courses = models.ManyToManyField('Course')
+    friends = models.ManyToManyField('Profile')
 
 
     def __str__(self):
         return f'{self.user.username} Profile'
 
-
+# https://www.twilio.com/blog/2018/05/build-chat-python-django-applications-programmable-chat.html
 class Room(models.Model):
     """Represents chat rooms that users can join"""
     name = models.CharField(max_length=30)
@@ -57,6 +56,7 @@ class Room(models.Model):
     def __str__(self):
         """Returns human-readable representation of the model instance."""
         return self.name
+
 
 class Meeting(models.Model):
     # should meeting have a course associated with it?

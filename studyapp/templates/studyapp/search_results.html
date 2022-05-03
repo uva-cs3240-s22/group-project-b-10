@@ -81,6 +81,7 @@ li a:hover:not(.active) {
         <th scope="col">Department</th>
             <th scope="col">Course Number</th>
         <th scope="col">Course Title</th>
+        <th scope="col">Button</th>
         </tr>
     </thead>
     <tbody>
@@ -90,6 +91,13 @@ li a:hover:not(.active) {
         <td>{{ course.department }}</td>
             <td>{{ course.course_number }}</td>
         <td>{{ course.course_name }}</td>
+        <form action="{% url 'studyapp:enroll' %}" method = "POST">
+          {% csrf_token %}
+          <input type="hidden" value="{{  course.id  }}" name="course_id">
+          <input type="hidden" value="{{  request.get_full_path  }}" name="next">
+        <td>
+          <input type="submit" class="btn btn-primary" role="button" value="Enroll"></td>
+            </form>
         </tr>
         {% endfor %}
     </tbody>

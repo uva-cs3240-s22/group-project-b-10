@@ -5,6 +5,7 @@ from . import views
 app_name = 'studyapp'
 urlpatterns = [
     path('', views.all_rooms, name='all_rooms'),
+    path("favicon.ico", views.favicon),
     re_path(r'token$', views.token, name="token"),
     re_path(r'rooms/(?P<slug>[-\w]+)/$', views.room_detail, name="room_detail"),
     path('<int:pk>/', views.DetailView.as_view(), name='detail'),
@@ -17,4 +18,8 @@ urlpatterns = [
     path('map/', views.MapView, name='map'),
     path('browse-meetings/', views.MeetingView, name="browse-meetings"),
     path('create-meetings/', views.CreateMeeting, name="create-meetings"),
+    path('enroll/', views.enroll_user_in_course, name = "enroll"),
+    path('drop/', views.drop_course, name = "drop"),
+    path('join/', views.join_meeting, name="join"),
+    path('leave', views.leave_meeting, name="leave"),
 ]

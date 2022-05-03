@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
@@ -20,6 +20,10 @@ from .forms import MeetingCreateForm
 from .models import Meeting, Reply, Course, Profile
 import requests
 
+from django.conf import settings
+from django.http import FileResponse, HttpRequest, HttpResponse
+from django.views.decorators.cache import cache_control
+from django.views.decorators.http import require_GET
 
 # Create your views here.
 
@@ -110,7 +114,6 @@ def MeetingView(request):
     return render(request, template_name, context)
 
 def CreateMeeting(request):
-    # model = Thought
     template_name = 'studyapp/create-meetings.html'
     form = MeetingCreateForm(request.POST or None)
     if form.is_valid():
@@ -119,7 +122,83 @@ def CreateMeeting(request):
     context = {
         'form': form 
         }
+
     return render(request, template_name, context)
+
+# added course as a parameter so hopefully it enrolls that course?
+def enroll_user_in_course(request):
+    
+    if request.method != 'POST':
+        return  HttpResponse('Method Not Allowed', status=405)
+    # where we take them back to
+    next_url = request.POST['next']
+    if not request.user.is_authenticated:
+        return HttpResponse('Unauthorized', status=401)
+    # Now assuming user is authenticated correctly
+    # get the current user 
+    myProfile = Profile.objects.get(user = request.user)
+    course_id = request.POST['course_id']
+    course = Course.objects.get(id = course_id)
+    myProfile.profile_courses.add(course)
+    myProfile.save()
+
+    return redirect(next_url)
+
+def drop_course(request):
+    if request.method != 'POST':
+        return  HttpResponse('Method Not Allowed', status=405)
+    # where we take them back to
+    next_url = request.POST['next']
+    if not request.user.is_authenticated:
+        return HttpResponse('Unauthorized', status=401)
+    # Now assuming user is authenticated correctly
+    # get the current user 
+    myProfile = Profile.objects.get(user = request.user)
+    course_id = request.POST['course_id']
+    course = Course.objects.get(id = course_id)
+    myProfile.profile_courses.remove(course)
+    myProfile.save()
+    return redirect(next_url)
+
+def join_meeting(request):
+    if request.method != 'POST':
+        return  HttpResponse('Method Not Allowed', status=405)
+    # where we take them back to
+    next_url = request.POST['next']
+    if not request.user.is_authenticated:
+        return HttpResponse('Unauthorized', status=401)
+    # Now assuming user is authenticated correctly
+    # get the current user 
+    myProfile = Profile.objects.get(user = request.user)
+    meeting_id = request.POST['meeting_id']
+    meeting = Meeting.objects.get(id = meeting_id)
+    # this part appends the meeting to the user
+    myProfile.meetings.add(meeting)
+    myProfile.save()
+    # now we need to append the user to the meeting
+    meeting.buddies.add(myProfile)
+    meeting.save()
+    return redirect(next_url)
+
+def leave_meeting(request):
+    if request.method != 'POST':
+        return  HttpResponse('Method Not Allowed', status=405)
+    # where we take them back to
+    next_url = request.POST['next']
+    if not request.user.is_authenticated:
+        return HttpResponse('Unauthorized', status=401)
+    # Now assuming user is authenticated correctly
+    # get the current user 
+    myProfile = Profile.objects.get(user = request.user)
+    meeting_id = request.POST['meeting_id']
+    meeting = Meeting.objects.get(id = meeting_id)
+    # this part appends the meeting to the user
+    myProfile.meetings.remove(meeting)
+    myProfile.save()
+    # now we need to append the user to the meeting
+    meeting.buddies.remove(myProfile)
+    meeting.save()
+    return redirect(next_url)
 
 def api_call(request):
     # find a way to clear the database or update before repopulating
@@ -196,3 +275,9 @@ def token(request):
     }
 
     return JsonResponse(response)
+
+@require_GET
+@cache_control(max_age=60 * 60 * 24, immutable=True, public=True)  # one day
+def favicon(request: HttpRequest) -> HttpResponse:
+    file = (settings.BASE_DIR / "studyapp" / "static" / "favicon.png").open("rb")
+    return FileResponse(file)
