@@ -383,8 +383,7 @@ def token(request):
     chat_service_sid = settings.TWILIO_CHAT_SERVICE_SID
 
     token = AccessToken(account_sid, api_key, api_secret, identity=identity)
-    
-    # print(token)
+
     # Create a unique endpoint ID for the device
     endpoint = "MyDjangoChatRoom:{0}:{1}".format(identity, device_id)
 
@@ -392,6 +391,8 @@ def token(request):
         chat_grant = ChatGrant(endpoint_id=endpoint,
                                service_sid=chat_service_sid)
         token.add_grant(chat_grant)
+
+    print("token: ", token)
 
     response = {
         'identity': identity,

@@ -53,7 +53,7 @@ $(function() {
       console.log("this is the token");     // can comment out
       console.log(data.token);              // can comment out
       print(
-        "You have been assigned a random username of: " +
+        "You have been assigned username: " +
           '<span class="me">' +
           username +
           "</span>",
