@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'datetimepicker',
+    'bootstrap_datepicker_plus',
+    'jquery'
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -207,6 +209,7 @@ SOCIALACCOUNT_PROVIDERS = {
 
 # https://stackoverflow.com/questions/9736975/django-admin-doesnotexist-at-admin
 # We had changed this to 1 and then 2 and that was causing issues; 5 seems to be the right number
+
 SITE_ID=7
 
 LOGIN_REDIRECT_URL = '/'

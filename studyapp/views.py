@@ -25,6 +25,8 @@ from django.conf import settings
 from django.http import FileResponse, HttpRequest, HttpResponse
 from django.views.decorators.cache import cache_control
 from django.views.decorators.http import require_GET
+from bootstrap_datepicker_plus.widgets import DateTimePickerInput
+from django.views import generic
 
 # Create your views here.
 
@@ -55,7 +57,14 @@ class SearchResultsView(generic.ListView):
         object_list = Course.objects.filter(
             Q(course_title__icontains=query) | Q(course_name__icontains=query) | Q(department__icontains=query) | Q(course_number__icontains=query)
         )
-        return object_list
+        my_courses = Profile.objects.get(user = self.request.user).profile_courses.all()
+        final_list = []
+        for ol in object_list:
+            if ol in my_courses:
+                final_list.append((ol, 1))
+            else:
+                final_list.append((ol, 0))
+        return final_list
 
 def vote(request, meeting_id):
     meeting = get_object_or_404(Meeting, pk=meeting_id)
@@ -79,6 +88,27 @@ def get_data():
 	url = 'https://api.devhub.virginia.edu/v1/courses'
 	data = requests.get(url).json()
 	return data
+
+
+
+def RelevantMeetingsView(request):
+    myProfile = Profile.objects.get(user = request.user)
+    my_courses = myProfile.profile_courses.all()
+    # print(my_courses)
+    all_meetings = Meeting.objects.all()
+    relevant_meetings = []
+    for meeting in all_meetings:
+        if meeting.course in my_courses:
+            if myProfile in meeting.buddies.all():
+                relevant_meetings.append((meeting, 1))
+            else:
+                relevant_meetings.append((meeting, 0))
+
+    template_name = 'studyapp/relevant-meetings.html'
+    context = {'all_meetings': relevant_meetings}
+    return render(request, template_name, context)
+    
+
 
 def CoursesView(request):
     model = Course
@@ -115,23 +145,68 @@ def MapView(request):
                   {'mapbox_access_token': mapbox_access_token })
 # idea here is we let users browse all the upcoming meetings, so they can add the ones they want
 def MeetingView(request):
+    myProfile = Profile.objects.get(user=request.user)
+    meetings = Meeting.objects.order_by('post_date')
+
+    all_meetings = []
+    for meeting in meetings:
+        if myProfile in meeting.buddies.all():
+            all_meetings.append((meeting, 1))
+        else:
+            all_meetings.append((meeting, 0))
     model = Meeting
     template_name = 'studyapp/browse-meetings.html'
-    all_meetings = Meeting.objects.order_by('post_date')
     context = {'all_meetings': all_meetings}
     return render(request, template_name, context)
+
+# class CreateView(generic.edit.CreateView):
+#     model = Meeting
+#     fields = fields = [
+#             'location',
+#             'course',
+#             'start_time',
+#             'end_time',
+#             'post_text',
+#             'buddies', 
+#         ]
+#     def get_form(self):
+#         form = super().get_form()
+#         form.fields['start_time'].widget = DateTimePickerInput()
+#         form.fields['end_time'].widget = DateTimePickerInput()
+#         return form
 
 def CreateMeeting(request):
     template_name = 'studyapp/create-meetings.html'
     form = MeetingCreateForm(request.POST or None)
     if form.is_valid():
-        form.save()
+        new_meeting = form.save()
+        # print(f.id)
+        # append the meeting to user profile
+        myProfile = Profile.objects.get(user = request.user)
+        # meeting_id = request.POST['meeting_id']
+        meeting_id = new_meeting.id
+        meeting = Meeting.objects.get(id = meeting_id)
+         # this part appends the meeting to the user
+        myProfile.meetings.add(meeting)
         
+        meeting = Meeting.objects.get(id = meeting_id)
+
+        myProfile.meetings.add(meeting)
+        myProfile.save()
+
+        meeting.buddies.add(myProfile)
+        meeting.save()
+        return HttpResponseRedirect("/meeting-successful/")
     context = {
         'form': form 
         }
+        
 
     return render(request, template_name, context)
+
+def meeting_successful_view(request):
+    template_name = 'studyapp/meeting-successful.html'
+    return render(request, template_name)
 
 # added course as a parameter so hopefully it enrolls that course?
 def enroll_user_in_course(request):
@@ -261,7 +336,7 @@ def token(request):
     # print("name", Profile.objects.get(user = request.user).name, "type", type(er).Profile.objects.get(user = request.usname))
     identity = request.GET.get('identity', fake.user_name())
     device_id = request.GET.get('device', 'default')  # unique device ID
-
+    # print(device_id)
     # print("token views")
 
     account_sid = settings.TWILIO_ACCOUNT_SID
@@ -270,7 +345,8 @@ def token(request):
     chat_service_sid = settings.TWILIO_CHAT_SERVICE_SID
 
     token = AccessToken(account_sid, api_key, api_secret, identity=identity)
-
+    
+    # print(token)
     # Create a unique endpoint ID for the device
     endpoint = "MyDjangoChatRoom:{0}:{1}".format(identity, device_id)
 

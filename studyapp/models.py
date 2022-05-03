@@ -35,12 +35,12 @@ class Profile(models.Model):
     objects = models.Manager()
     name = models.CharField(max_length=200)
     email = models.CharField(max_length=200)
-    friends = models.ManyToManyField("Profile")
     # a user's/profile's relationship to meetings is many to many.
     # A meeting might have many profiles
     # A profile might have many meetings
     meetings = models.ManyToManyField('Meeting')
     profile_courses = models.ManyToManyField('Course')
+    friends = models.ManyToManyField('Profile')
 
 
     def __str__(self):
@@ -77,10 +77,10 @@ class Meeting(models.Model):
     buddies = models.ManyToManyField(Profile)
     # partners = models.ForeignKey(Profile, on_delete=models.CASCADE, default = None)
     # we want time
-    start_time = post_date = models.DateTimeField('Start time', default=None)
+    start_time = models.DateTimeField('Start time', default=None)
     end_time = models.DateTimeField('End time', default=None)
 
-    post_text = models.CharField(max_length=200)
+    post_text = models.CharField('Description', max_length=200)
     post_date = models.DateTimeField('date posted', default=timezone.now)
     def __str__(self):
         return self.post_text
