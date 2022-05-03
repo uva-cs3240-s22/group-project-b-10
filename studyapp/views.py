@@ -295,14 +295,10 @@ def send_friend_request(request, userID):
 
 def accept_friend_request(request, requestID):
     friend_request = Friend_Request.objects.get(id=requestID)
-    if friend_request.to_user == request.user:
-        friend_request.to_user.friends.add(friend_request.from_user)
-        friend_request.from_user.friends.add(friend_request.to_user)
-        friend_request.delete()
-        return HttpResponse('Friend request accepted!')
-    else:
-        friend_request.delete()
-        return HttpResponse('Friend request denied')
+    friend_request.to_user.friends.add(friend_request.from_user)
+    friend_request.from_user.friends.add(friend_request.to_user)
+    friend_request.delete()
+    return HttpResponse('Friend request accepted!')
 
 def FriendView(request):
     model = Friend_Request
