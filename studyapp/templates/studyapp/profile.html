@@ -91,7 +91,7 @@ li a:hover:not(.active) {
 
 <div class="content">
   <h1>{{profile.name}}</h1>
-  <p>Email: {{profile.email}}</p>
+  <p>Email: <a href="mailto:{{profile.email}}?subject=StudyBuddy:&body=Hello {{profile.name}}!">{{profile.email}}</a></p>
   <p>Username: {{user.username}}</p>
   <p>Friends: {{profile.friends}}</p>
     <p>Courses:
