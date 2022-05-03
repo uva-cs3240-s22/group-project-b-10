@@ -99,7 +99,10 @@ def RelevantMeetingsView(request):
     relevant_meetings = []
     for meeting in all_meetings:
         if meeting.course in my_courses:
-            relevant_meetings.append(meeting)
+            if myProfile in meeting.buddies.all():
+                relevant_meetings.append((meeting, 1))
+            else:
+                relevant_meetings.append((meeting, 0))
 
     template_name = 'studyapp/relevant-meetings.html'
     context = {'all_meetings': relevant_meetings}
