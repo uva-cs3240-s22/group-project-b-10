@@ -19,10 +19,14 @@ urlpatterns = [
     path('map/', views.MapView, name='map'),
     path('browse-meetings/', views.MeetingView, name="browse-meetings"),
     path('create-meetings/', views.CreateMeeting, name="create-meetings"),
+
     path('enroll/', views.enroll_user_in_course, name = "enroll"),
     path('drop/', views.drop_course, name = "drop"),
+    path('untoggle/', views.untoggle_course, name="untoggle"),
+
     path('join/', views.join_meeting, name="join"),
     path('leave/', views.leave_meeting, name="leave"),
+
     path('meeting-successful/', views.meeting_successful_view, name="meeting-successful"),
     path('relevant-meetings/', views.RelevantMeetingsView, name="relevant-meetings"),
     path('send_friend_request/<int:userID>/', views.send_friend_request, name='send-friend-request'),

@@ -18,7 +18,7 @@ from twilio.jwt.access_token.grants import ChatGrant
 
 from .models import Meeting, Reply, Course, Profile, Room
 from .forms import MeetingCreateForm
-from .models import Meeting, Reply, Course, Profile, Friend_Request
+from .models import Meeting, Reply, Course, Profile, Friend_Request , Enrollment
 import requests
 
 from django.conf import settings
@@ -94,7 +94,8 @@ def get_data():
 def RelevantMeetingsView(request):
     myProfile = Profile.objects.get(user = request.user)
     my_courses = myProfile.profile_courses.all()
-    # print(my_courses)
+    my_courses = [my_class.enrolled_course for my_class in Enrollment.objects.filter(student= myProfile).all() if my_class.isToggled]
+    print(my_courses)
     all_meetings = Meeting.objects.all()
     relevant_meetings = []
     for meeting in all_meetings:
@@ -121,7 +122,14 @@ def ProfileView(request):
     model = Profile
     template_name = 'studyapp/profile.html'
     myProfile = Profile.objects.get(user = request.user)
-    context = {'profile': myProfile}
+    enrollments = Enrollment.objects.filter(student= myProfile).all()
+    toggled_courses = []
+    for my_class in enrollments:
+        if my_class.isToggled:
+            toggled_courses.append((my_class.enrolled_course, 1))
+        else:
+            toggled_courses.append((my_class.enrolled_course, 0))
+    context = {'profile': myProfile, 'enrollments':toggled_courses}
     return render(request, template_name, context)
 
 def OtherProfileView(request, userID):
@@ -222,8 +230,10 @@ def enroll_user_in_course(request):
     myProfile = Profile.objects.get(user = request.user)
     course_id = request.POST['course_id']
     course = Course.objects.get(id = course_id)
+    enrollment_class = Enrollment.objects.create(student=myProfile, enrolled_course=course)
     myProfile.profile_courses.add(course)
     myProfile.save()
+
 
     return redirect(next_url)
 
@@ -237,10 +247,38 @@ def drop_course(request):
     # Now assuming user is authenticated correctly
     # get the current user 
     myProfile = Profile.objects.get(user = request.user)
+    myEnrollments = Enrollment.objects.filter(student = myProfile)
     course_id = request.POST['course_id']
     course = Course.objects.get(id = course_id)
+    enrolled_course = myEnrollments.get(enrolled_course=course)
+    enrolled_course.delete()
+
     myProfile.profile_courses.remove(course)
     myProfile.save()
+    return redirect(next_url)
+
+def untoggle_course(request):
+    post_object = request.POST.dict()
+    # print(post_object)
+    # print(request.POST['toggle_value'])
+    if request.method != 'POST':
+        return  HttpResponse('Method Not Allowed', status=405)
+    # where we take them back to
+    next_url = request.POST['next']
+    if not request.user.is_authenticated:
+        return HttpResponse('Unauthorized', status=401)
+    # Now assuming user is authenticated correctly
+    # get the current user
+    myProfile = Profile.objects.get(user = request.user)
+    myEnrollments = Enrollment.objects.filter(student = myProfile)
+    course_id = request.POST['course_id']
+    course = Course.objects.get(id = course_id)
+    enrolled_course = myEnrollments.get(enrolled_course=course)
+    if 'toggle_value' in post_object:
+        enrolled_course.isToggled = True
+    else:
+        enrolled_course.isToggled = False
+    enrolled_course.save()
     return redirect(next_url)
 
 def join_meeting(request):
