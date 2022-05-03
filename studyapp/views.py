@@ -138,9 +138,17 @@ def MapView(request):
                   {'mapbox_access_token': mapbox_access_token })
 # idea here is we let users browse all the upcoming meetings, so they can add the ones they want
 def MeetingView(request):
+    myProfile = Profile.objects.get(user=request.user)
+    meetings = Meeting.objects.order_by('post_date')
+
+    all_meetings = []
+    for meeting in meetings:
+        if myProfile in meeting.buddies.all():
+            all_meetings.append((meeting, 1))
+        else:
+            all_meetings.append((meeting, 0))
     model = Meeting
     template_name = 'studyapp/browse-meetings.html'
-    all_meetings = Meeting.objects.order_by('post_date')
     context = {'all_meetings': all_meetings}
     return render(request, template_name, context)
 
