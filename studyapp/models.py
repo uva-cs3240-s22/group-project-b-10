@@ -46,6 +46,11 @@ class Profile(models.Model):
     def __str__(self):
         return f'{self.user.username} Profile'
 
+class Enrollment(models.Model):
+    student=models.ForeignKey(Profile, on_delete=models.CASCADE)
+    enrolled_course=models.ForeignKey(Course, on_delete=models.CASCADE)
+    isToggled=models.BooleanField(default=True)
+    objects = models.Manager()
 
 # https://www.twilio.com/blog/2018/05/build-chat-python-django-applications-programmable-chat.html
 
