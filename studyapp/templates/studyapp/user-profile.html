@@ -92,10 +92,10 @@ li a:hover:not(.active) {
 <div class="content">
   <h1>{{profile.name}}</h1>
   <p>Email: {{profile.email}}</p>
-  <p>Username: {{user.username}}</p>
+  <p>Username: {{profile.user.username}}</p>
   <p>Buddies:
     {% for friend in profile.friends.all %}
-      <p><a href="/profile/{{user.id}}/">{{friend.name}}</a></p>
+      <p><a href="/profile/{{friend.id}}/">{{friend.name}}</a></p>
     {% endfor %}
   </p>
     <p>Courses:
@@ -104,7 +104,6 @@ li a:hover:not(.active) {
             <tr>
             <!-- <th scope="col">#</th> -->
             <th scope="col">Course</th>
-            <th scope="col">Drop?</th>
             </tr>
         </thead>
         <tbody>
@@ -117,7 +116,6 @@ li a:hover:not(.active) {
               <input type="hidden" value="{{  course.id  }}" name="course_id">
               <input type="hidden" value="{{  request.get_full_path  }}" name="next">
             <td>
-              <input type="submit" class="btn btn-danger" role="button" value="Drop"></td>
                 </form>
             </tr>
             {% endfor %}
@@ -133,7 +131,6 @@ li a:hover:not(.active) {
               <th scope="col">Course</th>
               <th scope="col">Meeting</th>
               <th scope="col">Time</th>
-              <th scope="col">Leave meeting?</th>
               </tr>
           </thead>
           <tbody>
@@ -148,7 +145,6 @@ li a:hover:not(.active) {
                 <input type="hidden" value="{{  meeting.id  }}" name="meeting_id">
                 <input type="hidden" value="{{  request.get_full_path  }}" name="next">
               <td>
-                <input type="submit" class="btn btn-danger" role="button" value="Leave"></td>
                   </form>
               </tr>
               {% endfor %}
