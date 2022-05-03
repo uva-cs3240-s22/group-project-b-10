@@ -76,7 +76,7 @@ li a:hover:not(.active) {
         </tr>
     </thead>
     <tbody>
-        {% for meeting in all_meetings %}
+        {% for meeting, isSignedUp in all_meetings %}
         <tr>
         <!-- <th scope="row">{{thought.id}}</th> -->
         <!-- I'm not sure if you can get the meeting's course name like this -->
@@ -88,11 +88,20 @@ li a:hover:not(.active) {
           {{ buddy.name}} 
         {% endfor %}</td>
         <td>
-          <form action="{% url 'studyapp:join' %}" method = "POST">
+            {% if isSignedUp %}
+                <form action="{% url 'studyapp:leave' %}" method = "POST">
+            {% else %}
+                <form action="{% url 'studyapp:join' %}" method = "POST">
+            {% endif %}
             {% csrf_token %}
             <input type="hidden" value="{{  meeting.id  }}" name="meeting_id">
             <input type="hidden" value="{{  request.get_full_path  }}" name="next">
-            <input type="submit" class="btn btn-success btn-sm" role="button" value="Join">
+            {% if isSignedUp %}
+                <input type="submit" class="btn btn-danger" role="button" value="Leave"></td>
+            {% else %}
+                <input type="submit" class="btn btn-success" role="button" value="Join">
+            {% endif %}
+
               </form>
         </td>
       </tr>

@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
+from django.contrib.auth import get_user_model
 # I got this from a search tutorial 
 # https://learndjango.com/tutorials/django-search-tutorial
 from django.db.models import Q
@@ -17,7 +18,7 @@ from twilio.jwt.access_token.grants import ChatGrant
 
 from .models import Meeting, Reply, Course, Profile, Room
 from .forms import MeetingCreateForm
-from .models import Meeting, Reply, Course, Profile
+from .models import Meeting, Reply, Course, Profile, Friend_Request
 import requests
 
 from django.conf import settings
@@ -56,7 +57,14 @@ class SearchResultsView(generic.ListView):
         object_list = Course.objects.filter(
             Q(course_title__icontains=query) | Q(course_name__icontains=query) | Q(department__icontains=query) | Q(course_number__icontains=query)
         )
-        return object_list
+        my_courses = Profile.objects.get(user = self.request.user).profile_courses.all()
+        final_list = []
+        for ol in object_list:
+            if ol in my_courses:
+                final_list.append((ol, 1))
+            else:
+                final_list.append((ol, 0))
+        return final_list
 
 def vote(request, meeting_id):
     meeting = get_object_or_404(Meeting, pk=meeting_id)
@@ -91,7 +99,10 @@ def RelevantMeetingsView(request):
     relevant_meetings = []
     for meeting in all_meetings:
         if meeting.course in my_courses:
-            relevant_meetings.append(meeting)
+            if myProfile in meeting.buddies.all():
+                relevant_meetings.append((meeting, 1))
+            else:
+                relevant_meetings.append((meeting, 0))
 
     template_name = 'studyapp/relevant-meetings.html'
     context = {'all_meetings': relevant_meetings}
@@ -127,9 +138,17 @@ def MapView(request):
                   {'mapbox_access_token': mapbox_access_token })
 # idea here is we let users browse all the upcoming meetings, so they can add the ones they want
 def MeetingView(request):
+    myProfile = Profile.objects.get(user=request.user)
+    meetings = Meeting.objects.order_by('post_date')
+
+    all_meetings = []
+    for meeting in meetings:
+        if myProfile in meeting.buddies.all():
+            all_meetings.append((meeting, 1))
+        else:
+            all_meetings.append((meeting, 0))
     model = Meeting
     template_name = 'studyapp/browse-meetings.html'
-    all_meetings = Meeting.objects.order_by('post_date')
     context = {'all_meetings': all_meetings}
     return render(request, template_name, context)
 
@@ -334,8 +353,39 @@ def token(request):
 
     return JsonResponse(response)
 
+
 @require_GET
 @cache_control(max_age=60 * 60 * 24, immutable=True, public=True)  # one day
 def favicon(request: HttpRequest) -> HttpResponse:
     file = (settings.BASE_DIR / "studyapp" / "static" / "favicon.png").open("rb")
     return FileResponse(file)
+
+def send_friend_request(request, userID):
+    from_user = Profile.objects.get(user=request.user)
+    to_user = Profile.objects.get(id=userID)
+    friend_request, created = Friend_Request.objects.get_or_create(from_user=from_user, to_user=to_user)
+    if created:
+        return HttpResponse('Friend request sent!')
+    else:
+        return HttpResponse('Friend request already pending')
+
+def accept_friend_request(request, requestID):
+    friend_request = Friend_Request.objects.get(id=requestID)
+    if friend_request.to_user == request.user:
+        friend_request.to_user.friends.add(friend_request.from_user)
+        friend_request.from_user.friends.add(friend_request.to_user)
+        friend_request.delete()
+        return HttpResponse('Friend request accepted!')
+    else:
+        return HttpResponse('Friend request denied')
+
+def FriendView(request):
+    model = Friend_Request
+    template_name = 'studyapp/send-friend-request.html'
+    User = get_user_model()
+    users = User.objects.all()
+    context = {
+        'users': users
+    }
+    return render(request, template_name, context)
+

@@ -1,0 +1,15 @@
+{# Load the tag library #}
+{% load bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+<ul class="all_users">
+    {% for user in users %}
+    <h1>{{user}} <a href="/send_friend_request/{{user.id}}/">send friend request</a></h1>
+    {% endfor %}
+</ul>

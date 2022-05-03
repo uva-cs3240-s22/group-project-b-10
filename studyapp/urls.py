@@ -24,4 +24,7 @@ urlpatterns = [
     path('leave/', views.leave_meeting, name="leave"),
     path('meeting-successful/', views.meeting_successful_view, name="meeting-successful"),
     path('relevant-meetings/', views.RelevantMeetingsView, name="relevant-meetings"),
+    path('send_friend_request/<int:userID>/', views.send_friend_request, name='send-friend-request'),
+    path('accept_friend_request/<int:requestID>/', views.accept_friend_request, name='accept-friend-request'),
+    path('browse-users/', views.FriendView, name="browse-users"),
 ]
